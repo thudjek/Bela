@@ -1,25 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Projects\\Bela\\Bela.WebMVC\\Bela.WebMVC.csproj": {}
+    "C:\\TH_Projects\\Bela\\Bela.WebMVC\\Bela.WebMVC.csproj": {}
   },
   "projects": {
-    "E:\\Projects\\Bela\\Bela.Application\\Bela.Application.csproj": {
+    "C:\\TH_Projects\\Bela\\Bela.Application\\Bela.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\Bela\\Bela.Application\\Bela.Application.csproj",
+        "projectUniqueName": "C:\\TH_Projects\\Bela\\Bela.Application\\Bela.Application.csproj",
         "projectName": "Bela.Application",
-        "projectPath": "E:\\Projects\\Bela\\Bela.Application\\Bela.Application.csproj",
-        "packagesPath": "C:\\Users\\Tomislav\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\Bela\\Bela.Application\\obj\\",
+        "projectPath": "C:\\TH_Projects\\Bela\\Bela.Application\\Bela.Application.csproj",
+        "packagesPath": "C:\\Users\\tomislav.hudjek\\.nuget\\packages\\",
+        "outputPath": "C:\\TH_Projects\\Bela\\Bela.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Tomislav\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\tomislav.hudjek\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -31,8 +30,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "E:\\Projects\\Bela\\Bela.Domain\\Bela.Domain.csproj": {
-                "projectPath": "E:\\Projects\\Bela\\Bela.Domain\\Bela.Domain.csproj"
+              "C:\\TH_Projects\\Bela\\Bela.Domain\\Bela.Domain.csproj": {
+                "projectPath": "C:\\TH_Projects\\Bela\\Bela.Domain\\Bela.Domain.csproj"
               }
             }
           }
@@ -74,22 +73,21 @@
         }
       }
     },
-    "E:\\Projects\\Bela\\Bela.Domain\\Bela.Domain.csproj": {
+    "C:\\TH_Projects\\Bela\\Bela.Domain\\Bela.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\Bela\\Bela.Domain\\Bela.Domain.csproj",
+        "projectUniqueName": "C:\\TH_Projects\\Bela\\Bela.Domain\\Bela.Domain.csproj",
         "projectName": "Bela.Domain",
-        "projectPath": "E:\\Projects\\Bela\\Bela.Domain\\Bela.Domain.csproj",
-        "packagesPath": "C:\\Users\\Tomislav\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\Bela\\Bela.Domain\\obj\\",
+        "projectPath": "C:\\TH_Projects\\Bela\\Bela.Domain\\Bela.Domain.csproj",
+        "packagesPath": "C:\\Users\\tomislav.hudjek\\.nuget\\packages\\",
+        "outputPath": "C:\\TH_Projects\\Bela\\Bela.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Tomislav\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\tomislav.hudjek\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -140,22 +138,21 @@
         }
       }
     },
-    "E:\\Projects\\Bela\\Bela.Infrastructure.Data\\Bela.Infrastructure.Data.csproj": {
+    "C:\\TH_Projects\\Bela\\Bela.Infrastructure.Data\\Bela.Infrastructure.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\Bela\\Bela.Infrastructure.Data\\Bela.Infrastructure.Data.csproj",
+        "projectUniqueName": "C:\\TH_Projects\\Bela\\Bela.Infrastructure.Data\\Bela.Infrastructure.Data.csproj",
         "projectName": "Bela.Infrastructure.Data",
-        "projectPath": "E:\\Projects\\Bela\\Bela.Infrastructure.Data\\Bela.Infrastructure.Data.csproj",
-        "packagesPath": "C:\\Users\\Tomislav\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\Bela\\Bela.Infrastructure.Data\\obj\\",
+        "projectPath": "C:\\TH_Projects\\Bela\\Bela.Infrastructure.Data\\Bela.Infrastructure.Data.csproj",
+        "packagesPath": "C:\\Users\\tomislav.hudjek\\.nuget\\packages\\",
+        "outputPath": "C:\\TH_Projects\\Bela\\Bela.Infrastructure.Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Tomislav\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\tomislav.hudjek\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -167,8 +164,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "E:\\Projects\\Bela\\Bela.Domain\\Bela.Domain.csproj": {
-                "projectPath": "E:\\Projects\\Bela\\Bela.Domain\\Bela.Domain.csproj"
+              "C:\\TH_Projects\\Bela\\Bela.Domain\\Bela.Domain.csproj": {
+                "projectPath": "C:\\TH_Projects\\Bela\\Bela.Domain\\Bela.Domain.csproj"
               }
             }
           }
@@ -226,22 +223,21 @@
         }
       }
     },
-    "E:\\Projects\\Bela\\Bela.Infrastructure.IoC\\Bela.Infrastructure.IoC.csproj": {
+    "C:\\TH_Projects\\Bela\\Bela.Infrastructure.IoC\\Bela.Infrastructure.IoC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\Bela\\Bela.Infrastructure.IoC\\Bela.Infrastructure.IoC.csproj",
+        "projectUniqueName": "C:\\TH_Projects\\Bela\\Bela.Infrastructure.IoC\\Bela.Infrastructure.IoC.csproj",
         "projectName": "Bela.Infrastructure.IoC",
-        "projectPath": "E:\\Projects\\Bela\\Bela.Infrastructure.IoC\\Bela.Infrastructure.IoC.csproj",
-        "packagesPath": "C:\\Users\\Tomislav\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\Bela\\Bela.Infrastructure.IoC\\obj\\",
+        "projectPath": "C:\\TH_Projects\\Bela\\Bela.Infrastructure.IoC\\Bela.Infrastructure.IoC.csproj",
+        "packagesPath": "C:\\Users\\tomislav.hudjek\\.nuget\\packages\\",
+        "outputPath": "C:\\TH_Projects\\Bela\\Bela.Infrastructure.IoC\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Tomislav\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\tomislav.hudjek\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -253,8 +249,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "E:\\Projects\\Bela\\Bela.Infrastructure.Data\\Bela.Infrastructure.Data.csproj": {
-                "projectPath": "E:\\Projects\\Bela\\Bela.Infrastructure.Data\\Bela.Infrastructure.Data.csproj"
+              "C:\\TH_Projects\\Bela\\Bela.Infrastructure.Data\\Bela.Infrastructure.Data.csproj": {
+                "projectPath": "C:\\TH_Projects\\Bela\\Bela.Infrastructure.Data\\Bela.Infrastructure.Data.csproj"
               }
             }
           }
@@ -292,22 +288,21 @@
         }
       }
     },
-    "E:\\Projects\\Bela\\Bela.WebMVC\\Bela.WebMVC.csproj": {
+    "C:\\TH_Projects\\Bela\\Bela.WebMVC\\Bela.WebMVC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\Bela\\Bela.WebMVC\\Bela.WebMVC.csproj",
+        "projectUniqueName": "C:\\TH_Projects\\Bela\\Bela.WebMVC\\Bela.WebMVC.csproj",
         "projectName": "Bela.WebMVC",
-        "projectPath": "E:\\Projects\\Bela\\Bela.WebMVC\\Bela.WebMVC.csproj",
-        "packagesPath": "C:\\Users\\Tomislav\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\Bela\\Bela.WebMVC\\obj\\",
+        "projectPath": "C:\\TH_Projects\\Bela\\Bela.WebMVC\\Bela.WebMVC.csproj",
+        "packagesPath": "C:\\Users\\tomislav.hudjek\\.nuget\\packages\\",
+        "outputPath": "C:\\TH_Projects\\Bela\\Bela.WebMVC\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Tomislav\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\tomislav.hudjek\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -319,11 +314,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "E:\\Projects\\Bela\\Bela.Application\\Bela.Application.csproj": {
-                "projectPath": "E:\\Projects\\Bela\\Bela.Application\\Bela.Application.csproj"
+              "C:\\TH_Projects\\Bela\\Bela.Application\\Bela.Application.csproj": {
+                "projectPath": "C:\\TH_Projects\\Bela\\Bela.Application\\Bela.Application.csproj"
               },
-              "E:\\Projects\\Bela\\Bela.Infrastructure.IoC\\Bela.Infrastructure.IoC.csproj": {
-                "projectPath": "E:\\Projects\\Bela\\Bela.Infrastructure.IoC\\Bela.Infrastructure.IoC.csproj"
+              "C:\\TH_Projects\\Bela\\Bela.Infrastructure.IoC\\Bela.Infrastructure.IoC.csproj": {
+                "projectPath": "C:\\TH_Projects\\Bela\\Bela.Infrastructure.IoC\\Bela.Infrastructure.IoC.csproj"
               }
             }
           }
