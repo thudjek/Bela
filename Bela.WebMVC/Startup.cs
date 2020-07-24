@@ -15,7 +15,6 @@ namespace Bela.WebMVC
 {
     public class Startup
     {
-        //comment
         public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
