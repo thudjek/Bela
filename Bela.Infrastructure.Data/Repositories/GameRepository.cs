@@ -5,16 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Bela.Infrastructure.Data.Repositories
 {
-    public class GameRepository : IGameRepository
+    public class GameRepository : BaseRepository, IGameRepository
     {
-        public BelaDbContext _dbContext;
-        public GameRepository(BelaDbContext dbContext)
+        public GameRepository(BelaDbContext dbContext) : base(dbContext)
         {
-            _dbContext = dbContext;
+            
         }
-
     }
 }

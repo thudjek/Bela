@@ -2,7 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bela.Domain.Entities;
+using Bela.Domain.Interfaces;
+using Bela.Infrastructure.Data.Utility;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,21 +32,21 @@ namespace Bela.WebMVC
             {
                 Log.Information("Application is starting up");
                 var host = CreateHostBuilder(args).Build();
-                //using (var scope = host.Services.CreateScope())
-                //{
-                //    var serviceProvider = scope.ServiceProvider;
-                //    try
-                //    {
-                //        var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
-                //        var roleManager = serviceProvider.GetRequiredService<RoleManager<AppRole>>();
+                using (var scope = host.Services.CreateScope())
+                {
+                    var serviceProvider = scope.ServiceProvider;
+                    try
+                    {
+                        var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+                        var playerRepository = serviceProvider.GetRequiredService<IPlayerRepository>();
 
-                //        await DataSeeder.SeedData(userManager, roleManager);
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        Log.Error(ex, "Seeding data to database failed");
-                //    }
-                //}
+                        await DataSeeder.SeedUsers(userManager, playerRepository);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "Seeding data to database failed");
+                    }
+                }
                 await host.RunAsync();
             }
             catch (Exception ex)

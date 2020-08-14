@@ -12,3 +12,5 @@ E:\Projects\Bela\Bela.Infrastructure.IoC\bin\Debug\netcoreapp3.1\Bela.Infrastruc
 E:\Projects\Bela\Bela.Infrastructure.IoC\bin\Debug\netcoreapp3.1\Bela.Domain.pdb
 E:\Projects\Bela\Bela.Infrastructure.IoC\obj\Debug\netcoreapp3.1\Bela.Infrastructure.IoC.csprojAssemblyReference.cache
 E:\Projects\Bela\Bela.Infrastructure.IoC\obj\Debug\netcoreapp3.1\Bela.Infrastructure.IoC.csproj.CopyComplete
+E:\Projects\Bela\Bela.Infrastructure.IoC\bin\Debug\netcoreapp3.1\Bela.Application.dll
+E:\Projects\Bela\Bela.Infrastructure.IoC\bin\Debug\netcoreapp3.1\Bela.Application.pdb

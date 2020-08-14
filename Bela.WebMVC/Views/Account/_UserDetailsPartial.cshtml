@@ -1,0 +1,59 @@
+﻿@model Bela.Application.ViewModels.User.UserDetailsModel;
+
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="background-color: #36454f;">
+        <div class="modal-header">
+            <h5 class="modal-title">Profil igrača</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <div class="text-left">
+                            <label>Korisničko ime</label>
+                        </div>
+                        <input asp-for="UserName" class="form-control" type="text" readonly />
+                    </div>
+                    <div class="form-group">
+                        <div class="text-left">
+                            <label>Spol</label>
+                        </div>
+                        <input asp-for="Gender" class="form-control" type="text" readonly />
+                    </div>
+                    <div class="form-group">
+                        <div class="text-left">
+                            <label>Datum registracije</label>
+                        </div>
+                        <input asp-for="RegistrationDate" class="form-control" type="text" readonly />
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <div class="text-left">
+                            <label>Pobjede</label>
+                        </div>
+                        <input asp-for="Wins" class="form-control" type="text" readonly />
+                    </div>
+                    <div class="form-group">
+                        <div class="text-left">
+                            <label>Porazi</label>
+                        </div>
+                        <input asp-for="Losses" class="form-control" type="text" readonly />
+                    </div>
+                    <div class="form-group">
+                        <div class="text-left">
+                            <label>Odustajanja</label>
+                        </div>
+                        <input asp-for="Dropouts" class="form-control" type="text" readonly />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+        </div>
+    </div>
+</div>

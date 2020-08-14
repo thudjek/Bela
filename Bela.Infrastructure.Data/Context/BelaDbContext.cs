@@ -20,6 +20,7 @@ namespace Bela.Infrastructure.Data.Context
         public DbSet<PlayerGame> PlayerGames { get; set; }
         public DbSet<GameAction> GameActions { get; set; }
         public DbSet<Round> Rounds { get; set; }
+        public DbSet<Room> Rooms { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

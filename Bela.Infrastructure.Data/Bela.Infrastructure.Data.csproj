@@ -6,6 +6,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200723114745_InitialMigration.cs" />
+    <Compile Remove="Migrations\20200723114745_InitialMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200727143557_init.cs" />
+    <Compile Remove="Migrations\20200727143557_init.Designer.cs" />
+    <Compile Remove="Migrations\20200731140339_InitMigration.cs" />
+    <Compile Remove="Migrations\20200731140339_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200802194946_InitMigration.cs" />
+    <Compile Remove="Migrations\20200802194946_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200803153822_InitMigration.cs" />
+    <Compile Remove="Migrations\20200803153822_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200804135821_InitMigration.cs" />
+    <Compile Remove="Migrations\20200804135821_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200804154731_InitMigration.cs" />
+    <Compile Remove="Migrations\20200804154731_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200804155804_InitMigration.cs" />
+    <Compile Remove="Migrations\20200804155804_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200814114436_InitMigratin.cs" />
+    <Compile Remove="Migrations\20200814114436_InitMigratin.Designer.cs" />
+    <Compile Remove="Migrations\20200814125035_InitMigratin.cs" />
+    <Compile Remove="Migrations\20200814125035_InitMigratin.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.6">
@@ -17,6 +41,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="MimeKit" Version="2.9.1" />
   </ItemGroup>
 
   <ItemGroup>

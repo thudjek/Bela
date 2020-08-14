@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+    <UserSecretsId>45e3b29e-6bdc-45cd-85d6-89dc425b8b47</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,10 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Bela.Application\Bela.Application.csproj" />
     <ProjectReference Include="..\Bela.Infrastructure.IoC\Bela.Infrastructure.IoC.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Shared\Components\" />
   </ItemGroup>
 
 </Project>

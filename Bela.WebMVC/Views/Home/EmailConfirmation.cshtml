@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Belot.hr";
+}
+
+<br />
+
+@if (ViewBag.Success)
+{
+    <h2>Uspješna aktivacija. <a asp-action="Index" asp-controller="Home">Prijavite se</a></h2>
+}
+else
+{
+    <h2>Dogodila se greška</h2>
+}

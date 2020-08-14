@@ -1,8 +1,44 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model Bela.Application.ViewModels.User.UserLoginModel;
+@{
+    ViewData["Title"] = "Belot.hr";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<br />
+<div class="row text-center align-items-center h-100">
+    <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+        <h1>Belot.hr</h1>
+        <br />
+        <img src="~/imgs/suits/pik.png" />&nbsp;&nbsp;&nbsp;
+        <img src="~/imgs/suits/herc.png" />&nbsp;&nbsp;&nbsp;
+        <img src="~/imgs/suits/karo.png" />&nbsp;&nbsp;&nbsp;
+        <img src="~/imgs/suits/tref.png" />
+    </div>
+    <div class="col-lg-6 col-md-12 col-sm-12 col-12 mt-5">
+        <h2>Prijavi se</h2>
+        <hr />
+        <form asp-action="Login" method="post">
+            <div asp-validation-summary="All" class="text-left text-danger"></div>
+            <div class="form-group">
+                <div class="text-left">
+                    <label>Korisničko ime</label>
+                </div>
+                <input asp-for="UserName" class="form-control" type="text" placeholder="Korisničko ime" />
+            </div>
+            <div class="form-group">
+                <div class="text-left">
+                    <label>Lozinka</label>
+                </div>
+                <input asp-for="Password" class="form-control" type="password" placeholder="Lozinka" />
+            </div>
+            <div class="form-group text-center">
+                <button id="btnSubmit" type="submit" class="btn btn-secondary">Prijavi se</button>
+            </div>
+            <div class="text-center">
+                <a asp-action="ForgottenPassword" asp-controller="Account">Zaboravljena lozinka?</a>
+            </div>
+            <div class="text-center">
+                <a asp-action="Register" asp-controller="Home">Registriraj se</a>
+            </div>
+        </form>
+    </div>
 </div>
+

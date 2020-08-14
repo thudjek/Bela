@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Bela.Infrastructure.IoC;
+using Bela.WebMVC.Filters;
+using Bela.WebMVC.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,8 +33,14 @@ namespace Bela.WebMVC
         public void ConfigureServices(IServiceCollection services)
         {
             AddDbContext(services, Configuration["ConnectionStrings:DefaultConnection"]);
+
             RegisterServices(services);
+
+            AddMappingProfile(services);
+
+            services.AddScoped<RestrictToAuthorized>();
             services.AddControllersWithViews();
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -61,9 +69,18 @@ namespace Bela.WebMVC
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<MainHub>("/mainHub");
+                endpoints.MapHub<LobbyHub>("/lobbyHub");
+                endpoints.MapHub<RoomHub>("/roomHub");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "PageNotFound",
+                    pattern: "{*url}",
+                    defaults: new { controller = "Home", action = "PageNotFound" });
             });
         }
 
@@ -75,6 +92,11 @@ namespace Bela.WebMVC
         private static void AddDbContext(IServiceCollection services, string connString)
         {
             DependencyContainer.AddDbContext(services, connString);
+        }
+
+        private static void AddMappingProfile(IServiceCollection services)
+        {
+            DependencyContainer.AddMappingProfile(services);
         }
     }
 }

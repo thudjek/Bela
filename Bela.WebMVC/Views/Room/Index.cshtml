@@ -1,0 +1,230 @@
+﻿@model Bela.Application.ViewModels.Room.RoomViewModel;
+@{
+    ViewData["Title"] = "Belot.hr";
+}
+@section Styles
+{
+    <link rel="stylesheet" href="~/lib/sweetalert2/dist/sweetalert2.min.css" />
+}
+@section Scripts
+{
+    <script src="~/js/roomHub.js"></script>
+    <script src="~/lib/sweetalert2/dist/sweetalert2.min.js"></script>
+    <script src="~/js/swal-helper.js"></script>
+    <script>
+        var onInputTimeout = null;
+        var isOwner;
+        var swapPlayersArray = [];
+        $(function () {
+            isOwner = '@Model.IsOwner' == 'True';
+
+            renderUserList($(".filter-username-input").val());
+            renderUsersLayout();
+
+            $(".filter-username-input").on('input', function () {
+                if (onInputTimeout !== null) {
+                    clearTimeout(onInputTimeout);
+                }
+
+                var id = this.id;
+                var value = this.value;
+
+                if (id == "filterUsernameInputLg") {
+                    $("#filterUsernameInputSm").val(value);
+                }
+
+                if (id == "filterUsernameInputSm") {
+                    $("#filterUsernameInputLg").val(value);
+                }
+
+                onInputTimeout = setTimeout(function () {
+                    renderUserList(value);
+                }, 200);
+            });
+        });
+
+        function renderUserList(filterUsername) {
+            $(".user-list").load("@Url.Action("GetUserListViewComponent", "Lobby")?filterUsername=" + filterUsername + "&isRoomAndOwner=" + isOwner);
+        }
+
+        function renderUsersLayout() {
+            var roomId = @Model.Id;
+            var isOwner = '@Model.IsOwner' == 'True';
+
+            $("#usersLayout").load("@Url.Action("GetRoomUsersLayoutViewComponent", "Room")?roomId=" + roomId + "&isOwner=" + isOwner);
+        }
+
+        function inviteUser(userId, clickedElement) {
+            var temp = clickedElement.innerHTML;
+            clickedElement.innerHTML = "<div class='spinner-border spinner-border-sm' role='status'><span class='sr-only'>Loading...</span></div>";
+            clickedElement.classList.add("inactiveLink");
+            setTimeout(function () {
+                clickedElement.innerHTML = temp;
+                clickedElement.classList.remove("inactiveLink");
+            }, 500);
+
+            var ownerUsername = '@Model.OwnerUsername';
+            var roomId = @Model.Id;
+
+            mainHubConnection.invoke("SendInviteToUser", userId, ownerUsername, roomId);
+        }
+
+        function joinRoomGroup() {
+            var roomId = @Model.Id;
+            roomHubConnection.invoke("JoinRoomGroup", roomId);
+        }
+
+        function kickFromRoom(userId) {
+            var roomId = @Model.Id;
+            $.ajax({
+                url: "@Url.Action("KickFromRoom", "Room")",
+                dataType: "json",
+                data: { userId: userId, roomId: roomId },
+                cache: false,
+                success: function (data) {
+                    if (!data.success) {
+                        swalHelper.alertError("Dogodila se greška");
+                    }
+                },
+                error: function () {
+                    swalHelper.alertError("Dogodila se greška");
+                }
+            });
+        }
+
+        function toggleReady() {
+            var roomId = @Model.Id;
+            $.ajax({
+                url: "@Url.Action("ToggleReady", "Room")",
+                dataType: "json",
+                data: { roomId: roomId },
+                cache: false,
+                success: function (data) {
+                    if (!data.success) {
+                        swalHelper.alertError("Dogodila se greška");
+                    }
+                },
+                error: function () {
+                    swalHelper.alertError("Dogodila se greška");
+                }
+            });
+        }
+
+        function swapPlayers(btn) {
+
+            console.log(swapPlayersArray)
+            var userId = btn.value;
+            var parent = btn.parentElement.parentElement;
+            if (!swapPlayersArray.includes(userId)) {
+                swapPlayersArray.push(userId);
+                $(parent).css("border", "2px solid");
+            }
+            else {
+                swapPlayersArray.pop();
+                $(parent).css("border", "");
+            }
+
+            if (swapPlayersArray.length == 2) {
+
+                var roomId = @Model.Id;
+                $.ajax({
+                    url: "@Url.Action("SwapPlayers", "Room")",
+                    dataType: "json",
+                    cache: false,
+                    data: { firstUserId: swapPlayersArray[0], secondUserId: swapPlayersArray[1], roomId: roomId },
+                    success: function (data) {
+                        if (data.success) {
+                            swapPlayersArray = [];
+                        }
+                        else {
+                            swalHelper.alertError("Dogodila se greška");
+                        }
+                    },
+                    error: function () {
+                        swalHelper.alertError("Dogodila se greška");
+                    }
+                });
+            }
+        }
+
+        function tryStartGame() {
+            var roomId = @Model.Id;
+            $.ajax({
+                url: "@Url.Action("TryStartGame", "Room")",
+                dataType: "json",
+                cache: false,
+                data: { roomId: roomId },
+                success: function (data) {
+                    if (data.success) {
+                        alert("game start");
+                    }
+                    else {
+                        swalHelper.alertError(data.error);
+                    }
+                },
+                error: function () {
+                    swalHelper.alertError("Dogodila se greška");
+                }
+            });
+        }
+
+    </script>
+}
+<h4>Soba: &nbsp;@Model.RoomName</h4>
+
+<div class="row mt-3 mt-sm-3 mt-md-4 mt-lg-4 mt-xl-4">
+    <div class="col-12">
+        @if (Model.IsOwner)
+        {
+            <a id="btnLeaveRoom" asp-controller="Room" asp-action="DropRoom" asp-route-roomId="@Model.Id" class="btn btn-secondary mr-3">Raspusti sobu</a>
+            <a id="btnStartGame" onclick="tryStartGame()" class="btn btn-primary mr-3">Pokreni igru</a>
+            if (Model.IsPrivate)
+            {
+                <p class="mt-2">Lozinka sobe: @Model.RoomPassword</p>
+            }
+        }
+        else
+        {
+            <a id="btnLeaveRoom" asp-controller="Room" asp-action="LeaveRoom" asp-route-roomId="@Model.Id" class="btn btn-secondary mr-3">Izađi iz sobe</a>
+            <a id="btnReady" onclick="toggleReady()" class="btn btn-primary mr-3">Spreman</a>
+        }
+    </div>
+</div>
+<hr />
+<div class="row text-center">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-8">
+    </div>
+    <div class="col-lg-4 d-none d-lg-block">
+        <h5>Online igrači</h5>
+    </div>
+</div>
+<div class="row">
+    <div id="usersLayout" class="col-12 col-sm-12 col-md-12 col-lg-8">
+        
+    </div>
+    <div class="col-lg-4 d-none d-lg-block user-list-wrapper">
+        <input id="filterUsernameInputLg" type="text" class="form-control filter-username-input" placeholder="Filtriraj po imenu..." />
+        <br />
+        <ul class="list-group overflow-auto user-list" style="height: 500px">
+        </ul>
+    </div>
+</div>
+
+<hr class="d-lg-none" />
+<div class="row text-center d-block d-lg-none">
+    <div class="col-12 w-75 mr-auto ml-auto">
+        <h5>Online igrači</h5>
+    </div>
+</div>
+<div class="row d-block d-lg-none">
+    <div class="col-12 w-75 mr-auto ml-auto">
+        <input id="filterUsernameInputSm" type="text" class="form-control filter-username-input" placeholder="Filtriraj po imenu..." />
+        <br />
+        <ul class="list-group overflow-auto user-list" style="height: 250px">
+        </ul>
+    </div>
+</div>
+
+<div id="userDetailsModal" class="modal fade" data-url="@Url.Action("UserDetails", "Account")">
+
+</div>

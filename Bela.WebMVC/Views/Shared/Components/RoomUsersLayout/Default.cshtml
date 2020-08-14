@@ -1,0 +1,121 @@
+﻿@model Bela.WebMVC.ComponentModels.RoomUsersLayoutVCModel
+
+    <div class="row">
+        <div id="player1" class="col-6 justify-content-center align-self-center text-center">
+            @{
+                var user = Model.Users.Where(u => u.RoomOrderNumber.Value == 1).FirstOrDefault();
+                if (user != null)
+                {
+                        <div class="card @(user.IsReady ? "bg-green" : "bg-gray")">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">@user.UserName</h5>
+                                <p class="card-text">Pobjede: @user.Wins</p>
+                                <p class="card-text">Porazi: @user.Losses</p>
+                                <p class="card-text">Odustajanja: @user.Dropouts</p>
+                            </div>
+                        </div>
+                }
+             }
+        </div>
+        <div id="player2" class="col-6 justify-content-center align-self-center text-center">
+            @{
+                user = Model.Users.Where(u => u.RoomOrderNumber.Value == 2).FirstOrDefault();
+                if (user != null)
+                {
+                    <div class="card @(user.IsReady ? "bg-green" : "bg-gray")">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">@user.UserName</h5>
+                            <p class="card-text">Pobjede: @user.Wins</p>
+                            <p class="card-text">Porazi: @user.Losses</p>
+                            <p class="card-text">Odustajanja: @user.Dropouts</p>
+                        </div>
+                        @if (Model.IsOwner)
+                        {
+                            <div class="m-2 m-sm-2 m-lg-0">
+                                @if (!user.IsReady) 
+                                {
+                                    <button onclick="swapPlayers(this)" value="@user.Id" class="position-absolute btn btn-secondary btn-swap">Zamjeni</button>
+                                }
+                                <button onclick="kickFromRoom(@user.Id)" class="position-absolute btn btn-secondary btn-kick">Izbaci</button>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="spinner-border mt-lg-5" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <hr />
+    <h3 class="text-center">PROTIV</h3>
+    <hr />
+    <div class="row">
+        <div id="player3" class="col-6 justify-content-center align-self-center text-center">
+            @{
+                user = Model.Users.Where(u => u.RoomOrderNumber.Value == 3).FirstOrDefault();
+                if (user != null)
+                {
+                    <div class="card @(user.IsReady ? "bg-green" : "bg-gray")">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">@user.UserName</h5>
+                            <p class="card-text">Pobjede: @user.Wins</p>
+                            <p class="card-text">Porazi: @user.Losses</p>
+                            <p class="card-text">Odustajanja: @user.Dropouts</p>
+                        </div>
+                        @if (Model.IsOwner)
+                        {
+                            <div class="m-2 m-sm-2 m-lg-0">
+                                @if (!user.IsReady) 
+                                {
+                                    <button onclick="swapPlayers(this)" value="@user.Id" class="position-absolute btn btn-secondary btn-swap">Zamjeni</button>
+                                }
+                                <button class="position-absolute btn btn-secondary btn-kick">Izbaci</button>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="spinner-border mt-lg-5" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                }
+            }
+        </div>
+        <div id="player4" class="col-6 justify-content-center align-self-center text-center">
+            @{
+                user = Model.Users.Where(u => u.RoomOrderNumber.Value == 4).FirstOrDefault();
+                if (user != null)
+                {
+                    <div class="card @(user.IsReady ? "bg-green" : "bg-gray")">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">@user.UserName</h5>
+                            <p class="card-text">Pobjede: @user.Wins</p>
+                            <p class="card-text">Porazi: @user.Losses</p>
+                            <p class="card-text">Odustajanja: @user.Dropouts</p>
+                        </div>
+                        @if (Model.IsOwner)
+                        {
+                            <div class="m-2 m-sm-2 m-lg-0">
+                                @if (!user.IsReady) 
+                                {
+                                    <button onclick="swapPlayers(this)" value="@user.Id" class="position-absolute btn btn-secondary btn-swap">Zamjeni</button>
+                                }
+                                <button class="position-absolute btn btn-secondary btn-kick">Izbaci</button>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="spinner-border mt-lg-5" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                }
+            }
+        </div>
+    </div>

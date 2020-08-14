@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Bela.Application\Bela.Application.csproj" />
     <ProjectReference Include="..\Bela.Infrastructure.Data\Bela.Infrastructure.Data.csproj" />
   </ItemGroup>
 

@@ -13,7 +13,6 @@ namespace Bela.Domain.Entities
             PlayerGames = new List<PlayerGame>();
         }
 
-        public int FinishScore { get; set; }
         public int FirstTeamTotalScore { get; set; }
         public int SecondTeamTotalScore { get; set; }
         public GameStatus GameStatus { get; set; }

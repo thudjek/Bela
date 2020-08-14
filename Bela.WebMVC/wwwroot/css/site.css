@@ -7,9 +7,12 @@ a.navbar-brand {
   word-break: break-all;
 }
 
-/* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #039ed6;
+}
+
+a:hover {
+    color: #0366d6
 }
 
 .btn-primary {
@@ -27,12 +30,19 @@ a {
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+  font-size: 13px;
 }
+
+@media (min-width: 576px) {
+    html {
+        font-size: 14px;
+    }
+}
+
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .border-top {
@@ -43,7 +53,7 @@ html {
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .5);
 }
 
 button.accept-policy {
@@ -59,13 +69,91 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+    background-color: #36454f;
+    color: whitesmoke;
+    margin-bottom: 60px;
 }
+
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+  line-height: 60px;
 }
+
+
+
+/* Custom
+-------------------------------------------------- */
+
+.navbar-dark .navbar-nav .nav-link {
+    color: whitesmoke;
+}
+
+.reg-form-group {
+    width: 100% !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (min-width: 992px) {
+    .reg-form-group {
+        width: 60% !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    .reg-form-group {
+        width: 50% !important;
+    }
+}
+
+.list-group-item {
+    color: black;
+}
+
+.user-list-wrapper {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid;
+    border-left: 1px solid;
+    border-right: 1px solid;
+}
+
+.user-list .list-group-item:hover {
+    background-color: #F0F0F0;
+}
+
+#roomList .list-group .list-group-item:hover {
+    background-color: #F0F0F0;
+}
+
+.inactiveLink {
+    pointer-events: none;
+    cursor: default;
+}
+
+.btn-swap {
+    padding: .300rem .30rem;
+    bottom: 0;
+    left: 0;
+}
+
+.btn-kick {
+    padding: .300rem .30rem;
+    bottom: 0;
+    right: 0;
+}
+
+.bg-gray {
+    background-color: gray;
+}
+
+.bg-green {
+    background-color: green;
+}
+
+
