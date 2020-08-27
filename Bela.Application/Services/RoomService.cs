@@ -103,7 +103,10 @@ namespace Bela.Application.Services
             var room = await _roomRepository.GetByIdWithUsersAsync(roomId);
             var user = room.Users.FirstOrDefault(u => u.Id == userId);
             room.Users.Remove(user);
-            user.UserStatus = UserStatus.Online;
+
+            if(user.UserStatus == UserStatus.InRoom)
+                user.UserStatus = UserStatus.Online;
+
             user.RoomOrderNumber = null;
             user.IsReady = false;
             if (await _roomRepository.SaveAsync())

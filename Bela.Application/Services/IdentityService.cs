@@ -64,14 +64,18 @@ namespace Bela.Application.Services
             return await CheckSignInResult(user, signInResult);
         }
 
-        public async Task LogOutUser(int userId)
+        public async Task LogOutUser(int userId, bool isManualLogOut = true)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user != null)
             {
                 await UpdateOfflineUser(user);
             }
-            await _signInManager.SignOutAsync();
+
+            if (isManualLogOut)
+                await _signInManager.SignOutAsync();
+            else
+                await Task.FromResult(0);
         }
 
         public async Task<Result> ConfirmEmailActivation(string userId, string token)
@@ -150,7 +154,7 @@ namespace Bela.Application.Services
         public List<UserListViewModel> GetUserListViewModels(int userId, string filterUsername)
         {
             var query = _userManager.Users
-                        .Where(u => u.UserStatus == UserStatus.Online && u.Id != userId);
+                        .Where(u => u.UserStatus != UserStatus.Offline && u.Id != userId);
 
             if (!string.IsNullOrEmpty(filterUsername))
                 query = query.Where(u => u.UserName.StartsWith(filterUsername));
@@ -180,6 +184,13 @@ namespace Bela.Application.Services
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             user.MainHubConnectionId = connectionId;
+            if(user.UserStatus == UserStatus.Offline)
+            {
+                if (user.RoomId.HasValue)
+                    user.UserStatus = UserStatus.InRoom;
+                else
+                    user.UserStatus = UserStatus.Online;
+            }
             await _userManager.UpdateAsync(user);
         }
 
@@ -190,18 +201,30 @@ namespace Bela.Application.Services
             await _userManager.UpdateAsync(user);
         }
 
+        public async Task<Result> SetUserIsReady(int userId, bool isReady)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            user.IsReady = isReady;
+            var identityResult = await _userManager.UpdateAsync(user);
+            var result = identityResult.ToResult();
+            if (result.IsSucessfull && user.RoomId.HasValue)
+                result.Values = new object[] { "Room" + user.RoomId };
+
+            return result;
+        }
+
         private async Task UpdateOnlineUser(User user)
         {
             user.UserStatus = UserStatus.Online;
             user.CameOnline = DateTime.Now;
-            var result = await _userManager.UpdateAsync(user);
+            await _userManager.UpdateAsync(user);
         }
 
         private async Task UpdateOfflineUser(User user)
         {
             user.UserStatus = UserStatus.Offline;
             user.LastSeenOnline = DateTime.Now;
-            var result = await _userManager.UpdateAsync(user);
+            await _userManager.UpdateAsync(user);
         }
     }
 }

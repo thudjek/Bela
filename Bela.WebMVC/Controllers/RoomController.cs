@@ -64,16 +64,22 @@ namespace Bela.WebMVC.Controllers
             return Json(new { errors });
         }
 
-        public async Task<IActionResult> LeaveRoom(int roomId)
+        public async Task<JsonResult> LeaveRoom(int roomId)
         {
-            await _roomService.LeaveRoom(roomId, User.GetUserId());
+            var result = await _roomService.LeaveRoom(roomId, User.GetUserId());
 
-            await _roomHubContext.Clients.Group("Room" + roomId.ToString()).SendAsync("UpdateUsersLayout");
-            await _roomHubContext.Clients.All.SendAsync("UpdateUserList");
-            await _lobbyHubContext.Clients.All.SendAsync("UpdateUserList");
-            await _lobbyHubContext.Clients.All.SendAsync("UpdateRoomList");
-
-            return RedirectToAction("Index", "Lobby");
+            if (result)
+            {
+                await _roomHubContext.Clients.Group("Room" + roomId.ToString()).SendAsync("UpdateUsersLayout");
+                await _roomHubContext.Clients.All.SendAsync("UpdateUserList");
+                await _lobbyHubContext.Clients.All.SendAsync("UpdateUserList");
+                await _lobbyHubContext.Clients.All.SendAsync("UpdateRoomList");
+                return Json(new { success = true });
+            }
+            else 
+            {
+                return Json(new { success = false });
+            }
         }
 
         public async Task<IActionResult> DropRoom(int roomId)

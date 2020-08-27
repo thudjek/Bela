@@ -92,6 +92,27 @@
             });
         }
 
+        function leaveRoom() {
+            var roomId = @Model.Id;
+            $.ajax({
+                url: "@Url.Action("LeaveRoom", "Room")",
+                dataType: "json",
+                data: { roomId: roomId },
+                cache: false,
+                success: function (data) {
+                    if (data.success) {
+                        window.location.href = "/Lobby";
+                    }
+                    else {
+                        swalHelper.alertError("Dogodila se greška");
+                    }
+                },
+                error: function () {
+                    swalHelper.alertError("Dogodila se greška");
+                }
+            });
+        }
+
         function toggleReady() {
             var roomId = @Model.Id;
             $.ajax({
@@ -176,7 +197,7 @@
     <div class="col-12">
         @if (Model.IsOwner)
         {
-            <a id="btnLeaveRoom" asp-controller="Room" asp-action="DropRoom" asp-route-roomId="@Model.Id" class="btn btn-secondary mr-3">Raspusti sobu</a>
+            <a id="btnDropRoom" asp-controller="Room" asp-action="DropRoom" asp-route-roomId="@Model.Id" class="btn btn-secondary mr-3">Raspusti sobu</a>
             <a id="btnStartGame" onclick="tryStartGame()" class="btn btn-primary mr-3">Pokreni igru</a>
             if (Model.IsPrivate)
             {
@@ -185,7 +206,7 @@
         }
         else
         {
-            <a id="btnLeaveRoom" asp-controller="Room" asp-action="LeaveRoom" asp-route-roomId="@Model.Id" class="btn btn-secondary mr-3">Izađi iz sobe</a>
+            <a id="btnLeaveRoom" onclick="leaveRoom()" class="btn btn-secondary mr-3">Izađi iz sobe</a>
             <a id="btnReady" onclick="toggleReady()" class="btn btn-primary mr-3">Spreman</a>
         }
     </div>

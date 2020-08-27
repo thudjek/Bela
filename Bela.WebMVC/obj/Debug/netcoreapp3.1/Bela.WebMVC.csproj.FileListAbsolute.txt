@@ -408,3 +408,6 @@ E:\Projects\Bela\Bela.WebMVC\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Componen
 E:\Projects\Bela\Bela.WebMVC\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Components\UserList\Default.cshtml.g.cs
 E:\Projects\Bela\Bela.WebMVC\obj\Debug\netcoreapp3.1\Razor\Views\Account\_UserDetailsPartial.cshtml.g.cs
 E:\Projects\Bela\Bela.WebMVC\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Components\RoomUsersLayout\Default.cshtml.g.cs
+E:\Projects\Bela\Bela.WebMVC\obj\Debug\netcoreapp3.1\Razor\Views\Game\Index.cshtml.g.cs
+E:\Projects\Bela\Bela.WebMVC\obj\Debug\netcoreapp3.1\Razor\Views\Game\_ViewStart.cshtml.g.cs
+E:\Projects\Bela\Bela.WebMVC\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LayoutGame.cshtml.g.cs

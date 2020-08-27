@@ -6,15 +6,26 @@ using System.Threading.Tasks;
 using Bela.WebMVC.Extensions;
 using System.Security.Claims;
 using Bela.Application.Interfaces;
+using System.Threading;
 
 namespace Bela.WebMVC.Hubs
 {
     public class MainHub : Hub
     {
-        public readonly IIdentityService _identityService;
-        public MainHub(IIdentityService identityService)
+        private const int sec = 1000;
+
+        private readonly IIdentityService _identityService;
+        private readonly IHubContext<LobbyHub> _lobbyHubContext;
+        private readonly IHubContext<RoomHub> _roomHubContext;
+
+        public MainHub(
+            IIdentityService identityService,
+            IHubContext<LobbyHub> lobbyHubContext,
+            IHubContext<RoomHub> roomHubContext)
         {
             _identityService = identityService;
+            _lobbyHubContext = lobbyHubContext;
+            _roomHubContext = roomHubContext;
         }
 
         public override async Task OnConnectedAsync()
@@ -32,8 +43,24 @@ namespace Bela.WebMVC.Hubs
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
+            Thread.Sleep(100);
             var userId = GetUserId();
             await _identityService.DeleteUsersMainHubConnectionId(userId);
+
+            Thread.Sleep(20 * sec);
+
+            var connectionId = await _identityService.GetUsersMainHubConnectionId(userId);
+
+            if (connectionId != null)
+            {
+                await Task.FromResult(0);
+            }
+            else
+            {
+                await OnDisconnectUserUpdate(userId);
+                await base.OnDisconnectedAsync(exception);
+            }
+
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -41,6 +68,13 @@ namespace Bela.WebMVC.Hubs
         {
             var httpContext = Context.GetHttpContext();
             return httpContext.User.GetUserId();
+        }
+
+        private async Task OnDisconnectUserUpdate(int userId)
+        {
+            await _identityService.LogOutUser(userId, false);
+            await _roomHubContext.Clients.All.SendAsync("UpdateUserList");
+            await _lobbyHubContext.Clients.All.SendAsync("UpdateUserList");
         }
     }
 }

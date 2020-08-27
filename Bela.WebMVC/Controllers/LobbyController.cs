@@ -10,7 +10,7 @@ namespace Bela.WebMVC.Controllers
 {
     public class LobbyController : Controller
     {
-        public readonly IIdentityService _identityService;
+        private readonly IIdentityService _identityService;
         public LobbyController(IIdentityService identityService)
         {
             _identityService = identityService;

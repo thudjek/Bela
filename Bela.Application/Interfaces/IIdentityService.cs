@@ -12,7 +12,7 @@ namespace Bela.Application.Interfaces
     {
         Task<Result> RegisterUser(UserRegisterModel model);
         Task<Result> LogInUser(UserLoginModel model);
-        Task LogOutUser(int userId);
+        Task LogOutUser(int userId, bool isManualLogOut = true);
         Task<Result> ConfirmEmailActivation(string userId, string token);
         Task<Result> GetPasswordResetResult(string email);
         Task<Result> ResetPassword(ResetPasswordModel model);
@@ -22,5 +22,6 @@ namespace Bela.Application.Interfaces
         Task<string> GetUsersMainHubConnectionId(int userId);
         Task SetUsersMainHubConnectionId(int userId, string connectionId);
         Task DeleteUsersMainHubConnectionId(int userId);
+        Task<Result> SetUserIsReady(int userId, bool isReady);
     }
 }
