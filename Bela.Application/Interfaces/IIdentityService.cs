@@ -21,7 +21,6 @@ namespace Bela.Application.Interfaces
         Task<UserDetailsModel> GetUserDetailsModelAsync(int userId);
         Task<string> GetUsersMainHubConnectionId(int userId);
         Task SetUsersMainHubConnectionId(int userId, string connectionId);
-        Task DeleteUsersMainHubConnectionId(int userId);
-        Task<Result> SetUserIsReady(int userId, bool isReady);
+        Task<Result> DeleteUsersMainHubConnectionId(int userId);
     }
 }

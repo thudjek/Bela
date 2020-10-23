@@ -14,4 +14,8 @@ roomHubConnection.on("JoinRoomGroup", function () {
     joinRoomGroup();
 });
 
+roomHubConnection.on("GameStarted", function () {
+    window.location.href = "/Game";
+});
+
 roomHubConnection.start();

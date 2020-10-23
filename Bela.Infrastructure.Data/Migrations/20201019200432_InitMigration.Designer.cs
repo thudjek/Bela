@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bela.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BelaDbContext))]
-    [Migration("20200814125148_InitMigratin")]
-    partial class InitMigratin
+    [Migration("20201019200432_InitMigration")]
+    partial class InitMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -40,6 +40,9 @@ namespace Bela.Infrastructure.Data.Migrations
                     b.Property<int>("GameStatus")
                         .HasColumnType("int");
 
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
                     b.Property<int>("SecondTeamTotalScore")
                         .HasColumnType("int");
 
@@ -61,17 +64,14 @@ namespace Bela.Infrastructure.Data.Migrations
                     b.Property<string>("CardPlayed")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ChosenTrump")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("HighestCardInACall")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("HighestValueInACall")
+                        .HasColumnType("int");
 
                     b.Property<int>("PlayerPosition")
                         .HasColumnType("int");
@@ -79,7 +79,7 @@ namespace Bela.Infrastructure.Data.Migrations
                     b.Property<int>("RoundId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TurnNumber")
+                    b.Property<int>("RoundPhase")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -205,6 +205,9 @@ namespace Bela.Infrastructure.Data.Migrations
                     b.Property<int>("FirstTeamCalls")
                         .HasColumnType("int");
 
+                    b.Property<int>("FirstTeamRoundTotal")
+                        .HasColumnType("int");
+
                     b.Property<int>("FirstTeamScore")
                         .HasColumnType("int");
 
@@ -220,11 +223,14 @@ namespace Bela.Infrastructure.Data.Migrations
                     b.Property<int>("SecondTeamCalls")
                         .HasColumnType("int");
 
+                    b.Property<int>("SecondTeamRoundTotal")
+                        .HasColumnType("int");
+
                     b.Property<int>("SecondTeamScore")
                         .HasColumnType("int");
 
-                    b.Property<int>("TurnNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("TrumpSelectedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -514,7 +520,8 @@ namespace Bela.Infrastructure.Data.Migrations
                 {
                     b.HasOne("Bela.Domain.Entities.Room", "Room")
                         .WithMany("Users")
-                        .HasForeignKey("RoomId");
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

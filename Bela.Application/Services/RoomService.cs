@@ -100,7 +100,7 @@ namespace Bela.Application.Services
 
         public async Task<Result> KickUserFromRoom(int userId, int roomId)
         {
-            var room = await _roomRepository.GetByIdWithUsersAsync(roomId);
+            var room = _roomRepository.GetByIdWithUsers(roomId);
             var user = room.Users.FirstOrDefault(u => u.Id == userId);
             room.Users.Remove(user);
 

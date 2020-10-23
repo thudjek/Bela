@@ -76,5 +76,43 @@
                 window.location.href = "/Lobby";
             }
         });
+    },
+
+    showCallTrumpDialog: function (isLast) {
+        Swal.fire({
+            width: '24rem',
+            background: '#36454f',
+            backdrop: false,
+            target: document.getElementById("gameContainer"),
+            html: "<h3 style='color: white;'>Zovi aduta</h3><br />" +
+                  "<a href='#' onclick='selectTrump(1)'><img src='imgs/suits/herc.png'/></a>&nbsp;&nbsp;" +
+                  "<a href='#' onclick='selectTrump(2)'><img src='imgs/suits/pik.png'/></a>&nbsp;&nbsp;" +
+                  "<a href='#' onclick='selectTrump(3)'><img src='imgs/suits/karo.png'/></a>&nbsp;&nbsp;" +
+                  "<a href='#' onclick='selectTrump(4)'><img src='imgs/suits/tref.png'/></a><br /><br />" +
+                  (isLast ? "<p style='color: red;'>Zadnji ste i morate zvati</p>" :
+                  "<a type='button' style='color: white;' onclick='selectTrump(0)' class='btn btn-primary'>Dalje</a>"),
+            allowEnterKey: false,
+            showConfirmButton: false,
+            showCancelButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        });
+    },
+
+    showCallDialog: function () {
+        Swal.fire({
+            width: '24rem',
+            background: '#36454f',
+            backdrop: false,
+            target: document.getElementById("gameContainer"),
+            html: "<h3 style='color: white;'>Imate li zvanja?</h3><br />" +
+                  "<a type='button' style='color: white;' onclick='makeACall(true)' class='btn btn-primary'>Zovi</a>&nbsp;&nbsp;" + 
+                  "<a type='button' style='color: white;' onclick='makeACall(false)' class='btn btn-secondary'>Dalje</a>",
+            allowEnterKey: false,
+            showConfirmButton: false,
+            showCancelButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        });
     }
 }

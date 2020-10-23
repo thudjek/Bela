@@ -17,6 +17,7 @@ namespace Bela.WebMVC.Controllers
     public class RoomController : Controller
     {
         private readonly IRoomService _roomService;
+        private readonly IGameService _gameService;
         private readonly IIdentityService _identityService;
         private readonly IHubContext<LobbyHub> _lobbyHubContext;
         private readonly IHubContext<RoomHub> _roomHubContext;
@@ -24,12 +25,14 @@ namespace Bela.WebMVC.Controllers
 
         public RoomController(
             IRoomService roomService,
+            IGameService gameService,
             IIdentityService identityService,
             IHubContext<LobbyHub> lobbyHubContext,
             IHubContext<RoomHub> roomHubContext,
             IHubContext<MainHub> mainHubContext)
         {
             _roomService = roomService;
+            _gameService = gameService;
             _identityService = identityService;
             _lobbyHubContext = lobbyHubContext;
             _roomHubContext = roomHubContext;
@@ -162,8 +165,24 @@ namespace Bela.WebMVC.Controllers
             var result = await _roomService.CanGameBeStarted(roomId);
             if (result.IsSucessfull)
             {
-                //TODO Create game, redirect other 3 players to game page, return "success = true" from this and redirect owner to game page from ajax
-                return Json(new { success = true });
+                result = await _gameService.IsRoomInGame(roomId);
+                if (!result.IsSucessfull)
+                {
+                    result = await _gameService.StartGame(roomId);
+                    if (result.IsSucessfull)
+                    {
+                        await _roomHubContext.Clients.Group("Room" + roomId.ToString()).SendAsync("GameStarted");
+                        return Json(new { success = true });
+                    }
+                    else 
+                    {
+                        return Json(new { error = result.Errors[0] });
+                    }
+                }
+                else
+                {
+                    return Json(new { error = result.Errors[0] });
+                }
             }
             else
             {

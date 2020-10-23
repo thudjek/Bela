@@ -7,6 +7,7 @@ using Bela.WebMVC.Extensions;
 using System.Security.Claims;
 using Bela.Application.Interfaces;
 using System.Threading;
+using Bela.Application.Utility;
 
 namespace Bela.WebMVC.Hubs
 {
@@ -43,9 +44,10 @@ namespace Bela.WebMVC.Hubs
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            Thread.Sleep(100);
             var userId = GetUserId();
-            await _identityService.DeleteUsersMainHubConnectionId(userId);
+            var result = await _identityService.DeleteUsersMainHubConnectionId(userId);
+            if (result.IsSucessfull && result.Values != null)
+                await _roomHubContext.Clients.Group("Room" + result.Values[0].ToString()).SendAsync("UpdateUsersLayout");
 
             Thread.Sleep(20 * sec);
 

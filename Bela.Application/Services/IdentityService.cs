@@ -194,21 +194,35 @@ namespace Bela.Application.Services
             await _userManager.UpdateAsync(user);
         }
 
-        public async Task DeleteUsersMainHubConnectionId(int userId)
+        public async Task<Result> DeleteUsersMainHubConnectionId(int userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             user.MainHubConnectionId = null;
-            await _userManager.UpdateAsync(user);
+            if (user.UserStatus == UserStatus.InRoom && user.IsReady == true)
+            {
+                user.IsReady = false;
+            }
+                
+            var identityResult = await _userManager.UpdateAsync(user);
+            var result = identityResult.ToResult();
+
+            if (result.IsSucessfull && user.RoomId.HasValue)
+                result.Values = new object[] { user.RoomId };
+
+            return result;
         }
 
         public async Task<Result> SetUserIsReady(int userId, bool isReady)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
-            user.IsReady = isReady;
+            if(user.IsReady != isReady)
+                user.IsReady = isReady;
+
             var identityResult = await _userManager.UpdateAsync(user);
+
             var result = identityResult.ToResult();
             if (result.IsSucessfull && user.RoomId.HasValue)
-                result.Values = new object[] { "Room" + user.RoomId };
+                result.Values = new object[] { user.RoomId };
 
             return result;
         }

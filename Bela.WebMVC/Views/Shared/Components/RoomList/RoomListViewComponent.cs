@@ -17,6 +17,7 @@ namespace Bela.WebMVC.Views.Shared.Components.RoomList
         {
             _roomService = roomService;
         }
+
         public async Task<IViewComponentResult> InvokeAsync(string filterRoomName)
         {
             RoomVCModel model = new RoomVCModel();

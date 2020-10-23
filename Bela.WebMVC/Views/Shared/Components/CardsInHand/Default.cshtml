@@ -1,0 +1,12 @@
+﻿@model Bela.WebMVC.ComponentModels.HandVCModel;
+
+@foreach (var card in Model.CardsInHand)
+{
+<div onclick="selectCard(this, 'True' == '@Model.IsPlayable')" class="col m-1 card-in-hand cursor-pointer" data-card="@card.CardString" style="background-image: url(@card.CardUrl)">
+</div>
+}
+@for (var i = 0; i < (8 - Model.CardsInHand.Count); i++)
+{
+    <div class="col m-1">
+    </div>
+}

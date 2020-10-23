@@ -16,6 +16,7 @@ namespace Bela.Domain.Entities
         public int FirstTeamTotalScore { get; set; }
         public int SecondTeamTotalScore { get; set; }
         public GameStatus GameStatus { get; set; }
+        public int RoomId { get; set; }
         public List<PlayerGame> PlayerGames { get; set; }
         public List<Round> Rounds { get; set; }
     }

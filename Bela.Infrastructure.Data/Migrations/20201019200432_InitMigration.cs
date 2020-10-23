@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Bela.Infrastructure.Data.Migrations
 {
-    public partial class InitMigratin : Migration
+    public partial class InitMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,7 +17,8 @@ namespace Bela.Infrastructure.Data.Migrations
                     DateModified = table.Column<DateTime>(nullable: true),
                     FirstTeamTotalScore = table.Column<int>(nullable: false),
                     SecondTeamTotalScore = table.Column<int>(nullable: false),
-                    GameStatus = table.Column<int>(nullable: false)
+                    GameStatus = table.Column<int>(nullable: false),
+                    RoomId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,15 +69,17 @@ namespace Bela.Infrastructure.Data.Migrations
                     DateModified = table.Column<DateTime>(nullable: true),
                     GameId = table.Column<int>(nullable: false),
                     RoundNumber = table.Column<int>(nullable: false),
-                    TurnNumber = table.Column<int>(nullable: false),
                     RoundPhase = table.Column<int>(nullable: false),
-                    FirstTeamScore = table.Column<int>(nullable: false),
-                    SecondTeamScore = table.Column<int>(nullable: false),
                     FirstTeamCalls = table.Column<int>(nullable: false),
                     SecondTeamCalls = table.Column<int>(nullable: false),
+                    FirstTeamScore = table.Column<int>(nullable: false),
+                    SecondTeamScore = table.Column<int>(nullable: false),
+                    FirstTeamRoundTotal = table.Column<int>(nullable: false),
+                    SecondTeamRoundTotal = table.Column<int>(nullable: false),
                     FirstPlayerToPlay = table.Column<int>(nullable: false),
                     CurrentPlayerToPlay = table.Column<int>(nullable: false),
-                    CurrentTrump = table.Column<int>(nullable: true)
+                    CurrentTrump = table.Column<int>(nullable: true),
+                    TrumpSelectedBy = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -151,7 +154,7 @@ namespace Bela.Infrastructure.Data.Migrations
                         column: x => x.RoomId,
                         principalTable: "Rooms",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -163,11 +166,10 @@ namespace Bela.Infrastructure.Data.Migrations
                     DateCreated = table.Column<DateTime>(nullable: false),
                     DateModified = table.Column<DateTime>(nullable: true),
                     RoundId = table.Column<int>(nullable: false),
-                    TurnNumber = table.Column<int>(nullable: false),
+                    RoundPhase = table.Column<int>(nullable: false),
                     PlayerPosition = table.Column<int>(nullable: false),
                     Call = table.Column<int>(nullable: true),
-                    HighestCardInACall = table.Column<string>(nullable: true),
-                    ChosenTrump = table.Column<int>(nullable: true),
+                    HighestValueInACall = table.Column<int>(nullable: true),
                     CardPlayed = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

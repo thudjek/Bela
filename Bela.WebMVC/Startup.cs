@@ -72,6 +72,7 @@ namespace Bela.WebMVC
                 endpoints.MapHub<MainHub>("/mainHub");
                 endpoints.MapHub<LobbyHub>("/lobbyHub");
                 endpoints.MapHub<RoomHub>("/roomHub");
+                endpoints.MapHub<GameHub>("/gameHub");
 
                 endpoints.MapControllerRoute(
                     name: "default",

@@ -22,7 +22,6 @@ namespace Bela.Domain.Extensions
                     result.Add(source[0]);
                     source.RemoveAt(0);
                 }
-                result = result.OrderCards();
                 return string.Join(",", result);
             }
             else {

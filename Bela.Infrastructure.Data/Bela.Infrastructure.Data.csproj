@@ -26,6 +26,18 @@
     <Compile Remove="Migrations\20200814114436_InitMigratin.Designer.cs" />
     <Compile Remove="Migrations\20200814125035_InitMigratin.cs" />
     <Compile Remove="Migrations\20200814125035_InitMigratin.Designer.cs" />
+    <Compile Remove="Migrations\20200814125148_InitMigratin.cs" />
+    <Compile Remove="Migrations\20200814125148_InitMigratin.Designer.cs" />
+    <Compile Remove="Migrations\20200921190045_InitMigration.cs" />
+    <Compile Remove="Migrations\20200921190045_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20201001175700_InitMigration.cs" />
+    <Compile Remove="Migrations\20201001175700_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20201001214248_InitMigration.cs" />
+    <Compile Remove="Migrations\20201001214248_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20201002130047_InitMigration.cs" />
+    <Compile Remove="Migrations\20201002130047_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20201012202912_InitMigration.cs" />
+    <Compile Remove="Migrations\20201012202912_InitMigration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

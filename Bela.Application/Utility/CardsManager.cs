@@ -11,39 +11,44 @@ namespace Bela.Application.Utility
     {
         private static List<Card> FullDeckOfCards = new List<Card>()
         {
-            new Card(CardSuit.Hearts, CardValue.Ace, ""),
-            new Card(CardSuit.Hearts, CardValue.King, ""),
-            new Card(CardSuit.Hearts, CardValue.Queen, ""),
-            new Card(CardSuit.Hearts, CardValue.Jack, ""),
-            new Card(CardSuit.Hearts, CardValue.Ten, ""),
-            new Card(CardSuit.Hearts, CardValue.Nine, ""),
-            new Card(CardSuit.Hearts, CardValue.Eight, ""),
-            new Card(CardSuit.Hearts, CardValue.Seven, ""),
-            new Card(CardSuit.Spades, CardValue.Ace, ""),
-            new Card(CardSuit.Spades, CardValue.King, ""),
-            new Card(CardSuit.Spades, CardValue.Queen, ""),
-            new Card(CardSuit.Spades, CardValue.Jack, ""),
-            new Card(CardSuit.Spades, CardValue.Ten, ""),
-            new Card(CardSuit.Spades, CardValue.Nine, ""),
-            new Card(CardSuit.Spades, CardValue.Eight, ""),
-            new Card(CardSuit.Spades, CardValue.Seven, ""),
-            new Card(CardSuit.Diamonds, CardValue.Ace, ""),
-            new Card(CardSuit.Diamonds, CardValue.King, ""),
-            new Card(CardSuit.Diamonds, CardValue.Queen, ""),
-            new Card(CardSuit.Diamonds, CardValue.Jack, ""),
-            new Card(CardSuit.Diamonds, CardValue.Ten, ""),
-            new Card(CardSuit.Diamonds, CardValue.Nine, ""),
-            new Card(CardSuit.Diamonds, CardValue.Eight, ""),
-            new Card(CardSuit.Diamonds, CardValue.Seven, ""),
-            new Card(CardSuit.Clubs, CardValue.Ace, ""),
-            new Card(CardSuit.Clubs, CardValue.King, ""),
-            new Card(CardSuit.Clubs, CardValue.Queen, ""),
-            new Card(CardSuit.Clubs, CardValue.Jack, ""),
-            new Card(CardSuit.Clubs, CardValue.Ten, ""),
-            new Card(CardSuit.Clubs, CardValue.Nine, ""),
-            new Card(CardSuit.Clubs, CardValue.Eight, ""),
-            new Card(CardSuit.Clubs, CardValue.Seven, "")
+            new Card(CardSuit.Hearts, CardValue.Ace, "imgs/cards/herc_as.png"),
+            new Card(CardSuit.Hearts, CardValue.King, "imgs/cards/herc_kralj.png"),
+            new Card(CardSuit.Hearts, CardValue.Queen, "imgs/cards/herc_baba.png"),
+            new Card(CardSuit.Hearts, CardValue.Jack, "imgs/cards/herc_decko.png"),
+            new Card(CardSuit.Hearts, CardValue.Ten, "imgs/cards/herc_deset.png"),
+            new Card(CardSuit.Hearts, CardValue.Nine, "imgs/cards/herc_devet.png"),
+            new Card(CardSuit.Hearts, CardValue.Eight, "imgs/cards/herc_osam.png"),
+            new Card(CardSuit.Hearts, CardValue.Seven, "imgs/cards/herc_sedam.png"),
+            new Card(CardSuit.Spades, CardValue.Ace, "imgs/cards/pik_as.png"),
+            new Card(CardSuit.Spades, CardValue.King, "imgs/cards/pik_kralj.png"),
+            new Card(CardSuit.Spades, CardValue.Queen, "imgs/cards/pik_baba.png"),
+            new Card(CardSuit.Spades, CardValue.Jack, "imgs/cards/pik_decko.png"),
+            new Card(CardSuit.Spades, CardValue.Ten, "imgs/cards/pik_deset.png"),
+            new Card(CardSuit.Spades, CardValue.Nine, "imgs/cards/pik_devet.png"),
+            new Card(CardSuit.Spades, CardValue.Eight, "imgs/cards/pik_osam.png"),
+            new Card(CardSuit.Spades, CardValue.Seven, "imgs/cards/pik_sedam.png"),
+            new Card(CardSuit.Diamonds, CardValue.Ace, "imgs/cards/karo_as.png"),
+            new Card(CardSuit.Diamonds, CardValue.King, "imgs/cards/karo_kralj.png"),
+            new Card(CardSuit.Diamonds, CardValue.Queen, "imgs/cards/karo_baba.png"),
+            new Card(CardSuit.Diamonds, CardValue.Jack, "imgs/cards/karo_decko.png"),
+            new Card(CardSuit.Diamonds, CardValue.Ten, "imgs/cards/karo_deset.png"),
+            new Card(CardSuit.Diamonds, CardValue.Nine, "imgs/cards/karo_devet.png"),
+            new Card(CardSuit.Diamonds, CardValue.Eight, "imgs/cards/karo_osam.png"),
+            new Card(CardSuit.Diamonds, CardValue.Seven, "imgs/cards/karo_sedam.png"),
+            new Card(CardSuit.Clubs, CardValue.Ace, "imgs/cards/tref_as.png"),
+            new Card(CardSuit.Clubs, CardValue.King, "imgs/cards/tref_kralj.png"),
+            new Card(CardSuit.Clubs, CardValue.Queen, "imgs/cards/tref_baba.png"),
+            new Card(CardSuit.Clubs, CardValue.Jack, "imgs/cards/tref_decko.png"),
+            new Card(CardSuit.Clubs, CardValue.Ten, "imgs/cards/tref_deset.png"),
+            new Card(CardSuit.Clubs, CardValue.Nine, "imgs/cards/tref_devet.png"),
+            new Card(CardSuit.Clubs, CardValue.Eight, "imgs/cards/tref_osam.png"),
+            new Card(CardSuit.Clubs, CardValue.Seven, "imgs/cards/tref_sedam.png")
         };
+
+        public static string GetBackgroundCardImgPath()
+        {
+            return "imgs/cards/card_bgd.png";
+        }
 
         public static Card GetCardFromString(string cardString)
         {
@@ -53,6 +58,17 @@ namespace Bela.Application.Utility
             CardValue value = GetCardValueFromChar(valueChar);
             string imgPath = FullDeckOfCards.Where(c => c.Suit == suit && c.Value == value).FirstOrDefault().ImgPath;
             return new Card(suit, value, imgPath);
+        }
+
+        public static List<Card> GetCardListFromHandString(string handString)
+        {
+            List<Card> cards = new List<Card>();
+            var cardStrings = handString.Split(",").ToList();
+            foreach (var cardString in cardStrings)
+            {
+                cards.Add(GetCardFromString(cardString));
+            }
+            return cards;
         }
 
         public static CardSuit GetCardSuitFromChar(char suitChar)
@@ -99,8 +115,7 @@ namespace Bela.Application.Utility
 
         public static List<Card> GetShuffledDeck()
         {
-            
-            var deck = FullDeckOfCards;
+            var deck = new List<Card>(FullDeckOfCards);
             var n = deck.Count;
 
             while (n > 1)

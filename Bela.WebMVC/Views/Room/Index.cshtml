@@ -177,7 +177,7 @@
                 data: { roomId: roomId },
                 success: function (data) {
                     if (data.success) {
-                        alert("game start");
+                        window.location.href = "/Game";
                     }
                     else {
                         swalHelper.alertError(data.error);

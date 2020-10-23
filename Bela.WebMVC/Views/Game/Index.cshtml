@@ -1,23 +1,425 @@
-﻿<div>
-    <div class="row justify-content-center">
-        <div class="col text-center">
-            Popay
+﻿@model Bela.Application.ViewModels.Game.GameViewModel;
+@{
+    ViewData["Title"] = "Belot.hr";
+}
+@section Styles
+{
+    <link rel="stylesheet" href="~/lib/sweetalert2/dist/sweetalert2.min.css" />
+}
+@section Scripts
+{
+    <script src="~/js/gameHub.js"></script>
+    <script src="~/lib/sweetalert2/dist/sweetalert2.min.js"></script>
+    <script src="~/js/swal-helper.js"></script>
+    <script>
+        var currentRoundId = 0;
+        var currentPhase = 0;
+        var myTurn = false;
+        var callArray = [];
+
+        $(function () {
+            getCurrentData();
+            renderCardsInHand();
+            checkIfCallValid();
+            resetCallCards();
+        });
+
+        function joinGameGroup() {
+            var gameId = @Model.Id;
+            gameHubConnection.invoke("JoinGameGroup", gameId);
+        }
+
+        function selectCard(element, isPlayed) {
+            var cardString = $(element).attr("data-card");
+            if (isPlayed && myTurn) {
+                playCard(cardString);
+            }
+            else {
+                element.classList.toggle("card-selected");
+
+                if (element.classList.contains("card-selected")) {
+                    callArray.push(cardString);
+                }
+                else {
+                    removeFromArray(callArray, cardString);
+                }
+                
+            }
+        }
+
+        function playCard(cardString) {
+
+        }
+
+        function renderCardsInHand() {
+            var allCards = currentPhase > 1;
+            var isPlayable = currentPhase > 2;
+            $("#handContainer").load("@Url.Action("GetCardsInHandViewComponent", "Game")?allCards=" + allCards + "&isPlayable=" + isPlayable);
+        }
+
+        function getCurrentData() {
+            $.get("@Url.Action("GetCurrentData", "Game", new { gameId = Model.Id })", function (data) {
+                currentRoundId = data.currentRoundId;
+                currentPhase = data.currentRoundPhase;
+                renderRoundScores(data);
+                renderTotalScores(data);
+                renderCardsOnTable(data);
+                renderSelectedTrump(data.selectedTrump, data.trumpSelectedBy);
+                renderCurrentPlayerScreen(data.positionToPlay, data.isLast);
+                renderDealerIcon(data.dealerPosition);
+            });
+        }
+
+        function getTotalScores() {
+            $.get("@Url.Action("GetTotalScores", "Game")?roundId=" + currentRoundId, function (scores) {
+                renderTotalScores(scores);
+            });
+        }
+
+        function getRoundScores() {
+            $.get("@Url.Action("GetRoundScores", "Game", new { gameId = Model.Id })", function (scores) {
+                renderRoundScores(scores);
+            });
+        }
+
+        function resetSpeechBubbles() {
+            $("#speechBubbleDown").text("");
+            $("#speechBubbleUp").text("");
+            $("#speechBubbleLeft").text("");
+            $("#speechBubbleRight").text("");
+        }
+
+        function resetCallCards() {
+            $("#callContainerUp").empty();
+            $("#callContainerDown").empty();
+            $("#callContainerLeft").empty();
+            $("#callContainerRight").empty();
+        }
+
+        function resetRoundScores() {
+            $("#miCalls").text(0);
+            $("#viCalls").text(0);
+            $("#miPoints").text(0);
+            $("#viPoints").text(0);
+            $("#miRoundTotal").text(0);
+            $("#viRoundTotal").text(0);
+        }
+
+        function resetTable() {
+            $("#cardUp").attr("src", "");
+            $("#cardDown").attr("src", "");
+            $("#cardLeft").attr("src", "");
+            $("#cardRight").attr("src", "");
+        }
+
+        function resetTrump() {
+            $("#selectedHearts").addClass("d-none");
+            $("#selectedSpades").addClass("d-none");
+            $("#selectedClubs").addClass("d-none");
+            $("#selectedDiamonds").addClass("d-none");
+            $("#trump-username").text("");
+        }
+
+        function resetDealer() {
+            $("#playerUpDealerImg").addClass("d-none");
+            $("#playerDownDealerImg").addClass("d-none");
+            $("#playerLeftDealerImg").addClass("d-none");
+            $("#playerRightDealerImg").addClass("d-none");
+        }
+
+        function renderRoundScores(data) {
+            $("#miCalls").text(data.miCalls);
+            $("#viCalls").text(data.viCalls);
+            $("#miPoints").text(data.miPoints);
+            $("#viPoints").text(data.viPoints);
+            $("#miRoundTotal").text(data.miRoundTotal);
+            $("#viRoundTotal").text(data.viRoundTotal);
+        }
+
+        function renderTotalScores(data) {
+            $("#miTotalScore").text(data.miTotalScore);
+            $("#viTotalScore").text(data.viTotalScore);
+        }
+
+        function renderSelectedTrump(trump, username) {
+            if (trump != null && trump != 0 && username != null && username != "") {
+                $("#trump-username").text(username);
+                switch (trump) {
+                    case 1:
+                        $("#selectedHearts").removeClass("d-none");
+                        break;
+                    case 2:
+                        $("#selectedSpades").removeClass("d-none");
+                        break;
+                    case 3:
+                        $("#selectedDiamonds").removeClass("d-none");
+                        break;
+                    case 4:
+                        $("#selectedClubs").removeClass("d-none");
+                        break;
+                }
+            }
+        }
+
+        function renderCardsOnTable(data) {
+            $("#cardUp").attr("src", data.upCard);
+            $("#cardDown").attr("src", data.downCard);
+            $("#cardLeft").attr("src", data.leftCard);
+            $("#cardRight").attr("src", data.rightCard);
+        }
+
+        function renderDealerIcon(player) {
+            resetDealer();
+            switch (player) {
+                case 1:
+                    $("#playerDownDealerImg").removeClass("d-none");
+                    break;
+                case 2:
+                    $("#playerUpDealerImg").removeClass("d-none");
+                    break;
+                case 3:
+                    $("#playerRightDealerImg").removeClass("d-none");
+                    break;
+                case 4:
+                    $("#playerLeftDealerImg").removeClass("d-none");
+                    break;
+            }
+        }
+
+        function animateCountdown(player) {
+            switch (player) {
+                case 1: {
+                    $("#progressDown").removeClass("d-none");
+                    $("#progressBarDown").css("width", "0%");
+                    $("#progressBarDown").css("background-color", "red");
+                    $("#progressUp").addClass("d-none");
+                    $("#progressRight").addClass("d-none");
+                    $("#progressLeft").addClass("d-none");
+                    myTurn = true;
+                    break;
+                }
+                case 2: {
+                    $("#progressUp").removeClass("d-none");
+                    $("#progressBarUp").css("width", "0%");
+                    $("#progressBarUp").css("background-color", "red");
+                    $("#progressDown").addClass("d-none");
+                    $("#progressRight").addClass("d-none");
+                    $("#progressLeft").addClass("d-none");
+                    myTurn = false;
+                    break;
+                }
+                case 3: {
+                    $("#progressRight").removeClass("d-none");
+                    $("#progressBarRight").css("width", "0%");
+                    $("#progressBarRight").css("background-color", "red");
+                    $("#progressUp").addClass("d-none");
+                    $("#progressDown").addClass("d-none");
+                    $("#progressLeft").addClass("d-none");
+                    myTurn = false;
+                    break;
+                }
+                case 4: {
+                    $("#progressLeft").removeClass("d-none");
+                    $("#progressBarLeft").css("width", "0%");
+                    $("#progressBarLeft").css("background-color", "red");
+                    $("#progressUp").addClass("d-none");
+                    $("#progressRight").addClass("d-none");
+                    $("#progressDown").addClass("d-none");
+                    myTurn = false;
+                    break;
+                }
+            }
+        }
+
+        function renderCurrentPlayerScreen(player, isLast = false) {
+            animateCountdown(player);
+            if (myTurn) {
+                if (currentPhase == 1) {
+                    swalHelper.showCallTrumpDialog(isLast);
+                }
+                else if (currentPhase == 2) {
+                    swalHelper.showCallDialog();
+                }
+            }
+        }
+
+        function selectTrump(trump) {
+            Swal.close();
+            $.post("@Url.Action("SelectTrump", "Game")", { roundId: currentRoundId, trump: trump, username: '@Model.UserNameDown' }, function (data) {
+                if (!data.success) {
+                    swalHelper.alertError(data.error);
+                }
+            });
+        }
+
+        function makeACall(isCall) {
+            Swal.close();
+            console.log(isCall);
+        }
+
+        function getOnScreenPositionFromReturnedData(data) {
+            switch (@((int)Model.Position)) {
+                case 1:
+                    return data.positionToPlayDown;
+                case 2:
+                    return data.positionToPlayUp;
+                case 3:
+                    return data.positionToPlayRight;
+                case 4:
+                    return data.positionToPlayLeft;
+            }
+        }
+
+        function checkIfCallValid() {
+            callArray.push("HA");
+            callArray.push("HK");
+            callArray.push("HQ");
+
+            $.post("@Url.Action("MakeACall", "Game")", { cardStrings: callArray, roundId: currentRoundId }, function (data) {
+                console.log(data);
+            });
+        }
+
+    </script>
+}
+
+<div id="gameContainer" class="game-container">
+    <div class="row mb-2 justify-content-center">
+        <div id="playerUp" class="col text-center">
+            <div class="dealer-middle m-auto">
+                <img id="playerUpDealerImg" class="d-none dealer-img" title="Djelitelj" src="~/imgs/d-icon.png" />
+            </div>
+            <span class="game-username">@Model.UserNameUp</span>
+            <div id="progressUp" class="progress mr-auto ml-auto mt-1 mb-2 d-none" style="height: 5px; width: 8%">
+                <div id="progressBarUp" class="progress-bar" role="progressbar">
+                </div>
+            </div>
+            <div id="speechBubbleUp" class="speech-bubble speech-bubble-up-down"></div>
         </div>
     </div>
     <div class="row align-items-center">
-        <div class="col text-right">
-            Vizjak
+        <div id="playerLeft" class="col text-right">
+            <div class="dealer ml-auto">
+                <img id="playerLeftDealerImg" class="d-none dealer-img" title="Djelitelj" src="~/imgs/d-icon.png" />
+            </div>
+            <span class="game-username">@Model.UserNameLeft</span>
+            <div id="progressLeft" class="progress ml-auto mt-1 mb-2 d-none" style="height: 5px; width: 60%">
+                <div id="progressBarLeft" class="progress-bar" role="progressbar">
+                </div>
+            </div>
+            <div id="speechBubbleLeft" class="speech-bubble speech-bubble-left"></div>
         </div>
-        <div class="col card-table">
-
+        <div class="col-8 card-table">
+            <div class="row card-row">
+                <div class="col">
+                    <img id="cardUp" class="card-img card-img-in-play" src="" />
+                    <div id="callContainerUp" class="d-flex call-container">
+                        <img class="card-img card-img-in-play" src="~/imgs/cards/herc_as.png" />
+                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/herc_kralj.png" />
+                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/herc_baba.png" />
+                        <img class="card-img card-img-in-play call-card-next" src="~/imgs/cards/pik_sedam.png" />
+                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/pik_osam.png" />
+                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/pik_devet.png" />
+                    </div>
+                </div>
+            </div>
+            <div class="row card-row card-row-middle">
+                <div class="col text-center">
+                    <img id="cardLeft" class="card-img card-img-middle-row card-img-in-play" src="" />
+                    <div id="callContainerLeft" class="d-flex call-container-left">
+                        <img class="card-img card-img-in-play" src="~/imgs/cards/herc_as.png" />
+                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/herc_kralj.png" />
+                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/herc_baba.png" />
+                        <img class="card-img card-img-in-play call-card-next" src="~/imgs/cards/pik_sedam.png" />
+                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/pik_osam.png" />
+                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/pik_devet.png" />
+                    </div>
+                </div>
+                <div class="col text-center">
+                    <img id="cardRight" class="card-img card-img-middle-row card-img-in-play" src="" />
+                    <div id="callContainerRight" class="d-flex call-container-right">
+                        <img class="card-img card-img-in-play" src="~/imgs/cards/herc_as.png" />
+                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/herc_kralj.png" />
+                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/herc_baba.png" />
+                        <img class="card-img card-img-in-play call-card-next" src="~/imgs/cards/pik_sedam.png" />
+                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/pik_osam.png" />
+                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/pik_devet.png" />
+                    </div>
+                </div>
+            </div>
+            <div class="row card-row">
+                <div class="col">
+                    <img id="cardDown" class="card-img card-img-in-play" src="" />
+                    <div id="callContainerDown" class="d-flex call-container">
+                        <img class="card-img card-img-in-play" src="~/imgs/cards/herc_as.png" />
+                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/herc_kralj.png" />
+                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/herc_baba.png" />
+                        <img class="card-img card-img-in-play call-card-next" src="~/imgs/cards/pik_sedam.png" />
+                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/pik_osam.png" />
+                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/pik_devet.png" />
+                    </div>
+                </div>
+            </div>
+            <div class="selected-trump">
+                <img id="selectedHearts" class="d-none" src="~/imgs/suits/herc.png" />
+                <img id="selectedSpades" class="d-none" src="~/imgs/suits/pik.png" />
+                <img id="selectedClubs" class="d-none" src="~/imgs/suits/tref.png" />
+                <img id="selectedDiamonds" class="d-none" src="~/imgs/suits/karo.png" />
+                <span id="trump-username"></span>
+            </div>
         </div>
-        <div class="col text-left">
-            Miki
+        <div id="playerRight" class="col text-left">
+            <div class="dealer mr-auto">
+                <img id="playerRightDealerImg" class="d-none dealer-img" title="Djelitelj" src="~/imgs/d-icon.png" />
+            </div>
+            <span class="game-username">@Model.UserNameRight</span>
+            <div id="progressRight" class="progress mr-auto mt-1 mb-2 d-none" style="height: 5px; width: 60%">
+                <div id="progressBarRight" class="progress-bar" role="progressbar">
+                </div>
+            </div>
+            <div id="speechBubbleRight" class="speech-bubble speech-bubble-right"></div>
         </div>
     </div>
-    <div class="row justify-content-center">
-        <div class="col text-center">
-            Belcar
+    <div class="row mt-2 justify-content-center">
+        <div id="playerDown" class="col text-center game-username">
+            <div class="dealer-middle m-auto">
+                <img id="playerDownDealerImg" class="d-none dealer-img" title="Djelitelj" src="~/imgs/d-icon.png" />
+            </div>
+            <span class="game-username">@Model.UserNameDown</span>
+            <div id="progressDown" class="progress mr-auto ml-auto mt-1 mb-2 d-none" style="height: 5px; width: 8%">
+                <div id="progressBarDown" class="progress-bar" role="progressbar">
+                </div>
+            </div>
+            <div id="speechBubbleDown" class="speech-bubble speech-bubble-up-down"></div>
         </div>
+    </div>
+    <div id="handContainer" class="hand-container row">
     </div>
 </div>
+<table id="scoreTable" class="score-table">
+    <tr>
+        <th></th>
+        <th>MI</th>
+        <th>VI</th>
+    </tr>
+    <tr>
+        <td>Zvanja</td>
+        <td id="miCalls"></td>
+        <td id="viCalls"></td>
+    </tr>
+    <tr>
+        <td>Dijeljenje</td>
+        <td id="miPoints"></td>
+        <td id="viPoints"></td>
+    </tr>
+    <tr>
+        <td>Trenutni rezultat</td>
+        <td id="miRoundTotal"></td>
+        <td id="viRoundTotal"></td>
+    </tr>
+    <tr class="tr-total-score">
+        <td><strong>UKUPNO</strong></td>
+        <td id="miTotalScore"></td>
+        <td id="viTotalScore"></td>
+    </tr>
+</table>

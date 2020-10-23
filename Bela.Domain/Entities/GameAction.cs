@@ -9,11 +9,10 @@ namespace Bela.Domain.Entities
     {
         public int RoundId { get; set; }
         public Round Round { get; set; }
-        public int TurnNumber { get; set; }
+        public RoundPhase RoundPhase { get; set; }
         public PlayerPosition PlayerPosition { get; set; }
         public Call? Call { get; set; }
-        public string HighestCardInACall { get; set; }
-        public CardSuit? ChosenTrump { get; set; }
+        public CardValue? HighestValueInACall { get; set; }
         public string CardPlayed { get; set; }
     }
 }

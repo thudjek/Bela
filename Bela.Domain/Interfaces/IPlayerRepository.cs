@@ -9,5 +9,8 @@ namespace Bela.Domain.Interfaces
     public interface IPlayerRepository : IBaseRepository
     {
         void CreatePlayer(Player player);
+        Task<bool> IsPlayerInGame(int playerId);
+        Task<List<Player>> GetPlayerListByIds(List<int> playerIds);
+        Task<Player> GetPlayerByUserIdAsync(int userId);
     }
 }

@@ -24,6 +24,23 @@ namespace Bela.Domain.Extensions
             }
         }
 
+        public static PlayerPosition GetPreviousPosition(this PlayerPosition position)
+        {
+            switch (position)
+            {
+                case PlayerPosition.Down:
+                    return PlayerPosition.Left;
+                case PlayerPosition.Right:
+                    return PlayerPosition.Down;
+                case PlayerPosition.Up:
+                    return PlayerPosition.Right;
+                case PlayerPosition.Left:
+                    return PlayerPosition.Up;
+                default:
+                    throw new ArgumentException();
+            }
+        }
+
         public static PlayerPosition GetTeammatePosition(this PlayerPosition position)
         {
             switch (position)
@@ -39,6 +56,20 @@ namespace Bela.Domain.Extensions
                 default:
                     throw new ArgumentException();
             }
+        }
+
+        public static PlayerPosition GetOnScreenPosition(this PlayerPosition myPosition, PlayerPosition otherPosition)
+        {
+            if (myPosition.GetTeammatePosition() == otherPosition)
+                return PlayerPosition.Up;
+
+            if (myPosition.GetNextPosition() == otherPosition)
+                return PlayerPosition.Right;
+
+            if (myPosition.GetPreviousPosition() == otherPosition)
+                return PlayerPosition.Left;
+
+            return PlayerPosition.Down;
         }
     }
 }

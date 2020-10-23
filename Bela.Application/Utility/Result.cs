@@ -26,5 +26,10 @@ namespace Bela.Application.Utility
         {
             return new Result(false, errors);
         }
+
+        public static Result Fail()
+        {
+            return new Result(false, new string[] { });
+        }
     }
 }

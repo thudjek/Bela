@@ -11,6 +11,7 @@ namespace Bela.Domain.Interfaces
         void CreateRoom(Room room);
         Task<Room> GetByIdAsync(int id);
         Task<Room> GetByIdWithUsersAsync(int id);
+        Room GetByIdWithUsers(int id);
         Task<List<Room>> GetRoomListAsync(int userId, string filterRoomName);
         void DeleteRoom(Room room);
     }

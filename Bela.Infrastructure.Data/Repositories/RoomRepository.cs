@@ -37,6 +37,13 @@ namespace Bela.Infrastructure.Data.Repositories
                         .FirstOrDefaultAsync(r => r.Id == id);
         }
 
+        public Room GetByIdWithUsers(int id)
+        {
+            return _dbContext.Rooms
+                    .Include(r => r.Users)
+                    .FirstOrDefault(r => r.Id == id);
+        }
+
         public async Task<List<Room>> GetRoomListAsync(int userId, string filterRoomName)
         {
             var query = _dbContext.Rooms

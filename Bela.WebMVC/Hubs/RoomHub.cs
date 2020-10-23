@@ -33,11 +33,6 @@ namespace Bela.WebMVC.Hubs
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            Thread.Sleep(50);
-            int userId = GetUserId();
-            var result = await _identityService.SetUserIsReady(userId, false);
-            if (result.IsSucessfull && result.Values != null)
-                await _roomHubContext.Clients.Group(result.Values[0].ToString()).SendAsync("UpdateUsersLayout");
             await base.OnDisconnectedAsync(exception);
         }
 
