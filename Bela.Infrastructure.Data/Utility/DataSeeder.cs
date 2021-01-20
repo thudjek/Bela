@@ -38,80 +38,80 @@ namespace Bela.Infrastructure.Data.Utility
                 }
             }
 
-            username = await userManager.FindByNameAsync("daf");
-            if (username == null)
-            {
-                User user = new User
-                {
-                    UserName = "daf",
-                    Email = "daf@daf.com",
-                    Gender = Gender.Male,
-                    RegistrationDate = DateTime.Now,
-                    EmailConfirmed = true
-                };
+            //username = await userManager.FindByNameAsync("daf");
+            //if (username == null)
+            //{
+            //    User user = new User
+            //    {
+            //        UserName = "daf",
+            //        Email = "daf@daf.com",
+            //        Gender = Gender.Male,
+            //        RegistrationDate = DateTime.Now,
+            //        EmailConfirmed = true
+            //    };
 
-                var result = await userManager.CreateAsync(user, "asdasd");
-                if (result.Succeeded)
-                {
-                    Player player = new Player
-                    {
-                        UserId = user.Id,
-                        UserName = user.UserName
-                    };
-                    playerRepository.CreatePlayer(player);
-                    playerRepository.Save();
-                }
-            }
+            //    var result = await userManager.CreateAsync(user, "asdasd");
+            //    if (result.Succeeded)
+            //    {
+            //        Player player = new Player
+            //        {
+            //            UserId = user.Id,
+            //            UserName = user.UserName
+            //        };
+            //        playerRepository.CreatePlayer(player);
+            //        playerRepository.Save();
+            //    }
+            //}
 
-            username = await userManager.FindByNameAsync("miki");
-            if (username == null)
-            {
-                User user = new User
-                {
-                    UserName = "miki",
-                    Email = "miki@miki.com",
-                    Gender = Gender.Male,
-                    RegistrationDate = DateTime.Now,
-                    EmailConfirmed = true
-                };
+            //username = await userManager.FindByNameAsync("miki");
+            //if (username == null)
+            //{
+            //    User user = new User
+            //    {
+            //        UserName = "miki",
+            //        Email = "miki@miki.com",
+            //        Gender = Gender.Male,
+            //        RegistrationDate = DateTime.Now,
+            //        EmailConfirmed = true
+            //    };
 
-                var result = await userManager.CreateAsync(user, "asdasd");
-                if (result.Succeeded)
-                {
-                    Player player = new Player
-                    {
-                        UserId = user.Id,
-                        UserName = user.UserName
-                    };
-                    playerRepository.CreatePlayer(player);
-                    playerRepository.Save();
-                }
-            }
+            //    var result = await userManager.CreateAsync(user, "asdasd");
+            //    if (result.Succeeded)
+            //    {
+            //        Player player = new Player
+            //        {
+            //            UserId = user.Id,
+            //            UserName = user.UserName
+            //        };
+            //        playerRepository.CreatePlayer(player);
+            //        playerRepository.Save();
+            //    }
+            //}
 
-            username = await userManager.FindByNameAsync("viz");
-            if (username == null)
-            {
-                User user = new User
-                {
-                    UserName = "viz",
-                    Email = "viz@viz.com",
-                    Gender = Gender.Male,
-                    RegistrationDate = DateTime.Now,
-                    EmailConfirmed = true
-                };
+            //username = await userManager.FindByNameAsync("viz");
+            //if (username == null)
+            //{
+            //    User user = new User
+            //    {
+            //        UserName = "viz",
+            //        Email = "viz@viz.com",
+            //        Gender = Gender.Male,
+            //        RegistrationDate = DateTime.Now,
+            //        EmailConfirmed = true
+            //    };
 
-                var result = await userManager.CreateAsync(user, "asdasd");
-                if (result.Succeeded)
-                {
-                    Player player = new Player
-                    {
-                        UserId = user.Id,
-                        UserName = user.UserName
-                    };
-                    playerRepository.CreatePlayer(player);
-                    playerRepository.Save();
-                }
-            }
+            //    var result = await userManager.CreateAsync(user, "asdasd");
+            //    if (result.Succeeded)
+            //    {
+            //        Player player = new Player
+            //        {
+            //            UserId = user.Id,
+            //            UserName = user.UserName
+            //        };
+            //        playerRepository.CreatePlayer(player);
+            //        playerRepository.Save();
+            //    }
+            //}
         }
     }
 }
