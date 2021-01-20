@@ -249,7 +249,7 @@
         }
 
         function animateCountdown(player, remainingTime) {
-            var widthPercentage = remainingTime * 15;
+            var widthPercentage = (remainingTime / 15) * 100;
             resetCountdownProgressBars();
             if (timer != null)
                 clearInterval(timer);

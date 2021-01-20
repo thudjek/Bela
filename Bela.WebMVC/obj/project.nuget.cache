@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "TQ/Xn0XEYGnbeVnk+yZZBTz+Yfhv6xrf1xVPJ+uXQ7X45SkU8kaqnjVXcN8h1lDqZAXSn/Uha73FhwRJ1WOZUA==",
+  "dgSpecHash": "n5eL7M0BqGcv/CebR+comICcD8KWrlygI5gpYRDb+Qxqy6kbb3/CSokN8+pnshq4Cq4srxpuryZtqnPMafMvNw==",
   "success": true,
   "projectFilePath": "E:\\Projects\\Bela\\Bela.WebMVC\\Bela.WebMVC.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tomislav\\.nuget\\packages\\automapper\\10.0.0\\automapper.10.0.0.nupkg.sha512",
     "C:\\Users\\Tomislav\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.0.1\\automapper.extensions.microsoft.dependencyinjection.8.0.1.nupkg.sha512",
+    "C:\\Users\\Tomislav\\.nuget\\packages\\buildbundlerminifier\\3.2.449\\buildbundlerminifier.3.2.449.nupkg.sha512",
     "C:\\Users\\Tomislav\\.nuget\\packages\\mailkit\\2.8.0\\mailkit.2.8.0.nupkg.sha512",
     "C:\\Users\\Tomislav\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
     "C:\\Users\\Tomislav\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
