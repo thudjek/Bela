@@ -27,7 +27,7 @@ namespace Bela.Infrastructure.IoC
                 o.Password.RequireUppercase = false;
                 o.Password.RequireLowercase = false;
                 o.User.RequireUniqueEmail = true;
-                o.SignIn.RequireConfirmedEmail = true;
+                o.SignIn.RequireConfirmedEmail = false;
             })
             .AddErrorDescriber<LocalizedIdentityErrorDescriber>()
             .AddEntityFrameworkStores<BelaDbContext>()

@@ -81,12 +81,13 @@ namespace Bela.WebMVC.Controllers
                 var result = await _identityService.RegisterUser(model);
                 if (result.IsSucessfull)
                 {
-                    var link = Url.Action("ConfirmEmail", "Home", result.Values[0], Request.Scheme);
-                    EmailMessage message = EmailGenerator.GenerateConfirmEmailMessage(link, model.Email);
-                    await _emailService.SendEmailAsync(message);
+                    //var link = Url.Action("ConfirmEmail", "Home", result.Values[0], Request.Scheme);
+                    //EmailMessage message = EmailGenerator.GenerateConfirmEmailMessage(link, model.Email);
+                    //await _emailService.SendEmailAsync(message);
 
-                    ViewBag.Email = model.Email;
-                    return View("EmailActivation");
+                    //ViewBag.Email = model.Email;
+                    //return View("EmailActivation");
+                    return RedirectToAction("Index");
                 }
                 else
                 {

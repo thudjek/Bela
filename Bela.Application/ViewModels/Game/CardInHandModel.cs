@@ -8,5 +8,6 @@ namespace Bela.Application.ViewModels.Game
     {
         public string CardString { get; set; }
         public string CardUrl { get; set; }
+        public bool AskForBela { get; set; }
     }
 }

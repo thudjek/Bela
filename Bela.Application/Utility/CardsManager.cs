@@ -45,6 +45,33 @@ namespace Bela.Application.Utility
             new Card(CardSuit.Clubs, CardValue.Seven, "imgs/cards/tref_sedam.png")
         };
 
+        public static Card GetCard(CardSuit suit, CardValue value)
+        {
+            return FullDeckOfCards.FirstOrDefault(c => c.Suit == suit && c.Value == value);
+        }
+
+        public static List<Card> GetFourOfAKind(CardValue value)
+        {
+            return FullDeckOfCards.Where(c => c.Value == value).OrderBy(c => c.Suit).ToList();
+        }
+
+        public static List<Card> GetSequence(CardSuit suit, CardValue value, CallType type)
+        {
+            if (type == CallType.EightInARow)
+                return FullDeckOfCards.Where(c => c.Suit == suit).OrderBy(c => c.Value).ToList();
+
+            List<Card> cards = new List<Card>();
+            int counter = ((int)type) + 2;
+            int valueInt = (int)value;
+            for (int i = 0; i < counter; i++)
+            {
+                cards.Add(GetCard(suit, (CardValue)valueInt));
+                valueInt--;
+            }
+
+            return cards.OrderBy(c => c.Value).ToList();
+        }
+
         public static string GetBackgroundCardImgPath()
         {
             return "imgs/cards/card_bgd.png";
@@ -56,8 +83,7 @@ namespace Bela.Application.Utility
             char valueChar = cardString[0];
             CardSuit suit = GetCardSuitFromChar(suitChar);
             CardValue value = GetCardValueFromChar(valueChar);
-            string imgPath = FullDeckOfCards.Where(c => c.Suit == suit && c.Value == value).FirstOrDefault().ImgPath;
-            return new Card(suit, value, imgPath);
+            return GetCard(suit, value);
         }
 
         public static List<Card> GetCardListFromHandString(string handString)

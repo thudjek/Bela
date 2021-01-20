@@ -9,7 +9,8 @@ namespace Bela.Domain.Entities
     {
         public Round()
         {
-            GameActions = new List<GameAction>();
+            CardsPlayed = new List<CardPlayed>();
+            Calls = new List<Call>();
         }
 
         public int GameId { get; set; }
@@ -26,7 +27,8 @@ namespace Bela.Domain.Entities
         public PlayerPosition CurrentPlayerToPlay { get; set; }
         public CardSuit? CurrentTrump { get; set; }
         public string TrumpSelectedBy { get; set; }
-        public List<GameAction> GameActions { get; set; }
+        public List<CardPlayed> CardsPlayed { get; set; }
+        public List<Call> Calls { get; set; }
 
     }
 }

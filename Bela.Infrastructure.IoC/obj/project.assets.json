@@ -8243,6 +8243,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "projectReferences": {
             "E:\\Projects\\Bela\\Bela.Application\\Bela.Application.csproj": {
               "projectPath": "E:\\Projects\\Bela\\Bela.Application\\Bela.Application.csproj"
@@ -8261,6 +8262,7 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": {
             "target": "Package",
@@ -8282,7 +8284,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
       }
     }
   }

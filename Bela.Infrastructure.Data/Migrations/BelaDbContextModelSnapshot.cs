@@ -19,6 +19,76 @@ namespace Bela.Infrastructure.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Bela.Domain.Entities.Call", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("HighestCard")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PlayerPosition")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoundId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoundId");
+
+                    b.ToTable("Calls");
+                });
+
+            modelBuilder.Entity("Bela.Domain.Entities.CardPlayed", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CardString")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PlayerPosition")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoundId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoundPhase")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoundId");
+
+                    b.ToTable("CardsPlayed");
+                });
+
             modelBuilder.Entity("Bela.Domain.Entities.Game", b =>
                 {
                     b.Property<int>("Id")
@@ -47,44 +117,6 @@ namespace Bela.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Games");
-                });
-
-            modelBuilder.Entity("Bela.Domain.Entities.GameAction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("Call")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CardPlayed")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("HighestValueInACall")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlayerPosition")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoundId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoundPhase")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoundId");
-
-                    b.ToTable("GameActions");
                 });
 
             modelBuilder.Entity("Bela.Domain.Entities.Player", b =>
@@ -472,10 +504,19 @@ namespace Bela.Infrastructure.Data.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("Bela.Domain.Entities.GameAction", b =>
+            modelBuilder.Entity("Bela.Domain.Entities.Call", b =>
                 {
                     b.HasOne("Bela.Domain.Entities.Round", "Round")
-                        .WithMany("GameActions")
+                        .WithMany("Calls")
+                        .HasForeignKey("RoundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Bela.Domain.Entities.CardPlayed", b =>
+                {
+                    b.HasOne("Bela.Domain.Entities.Round", "Round")
+                        .WithMany("CardsPlayed")
                         .HasForeignKey("RoundId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

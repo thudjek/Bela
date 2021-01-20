@@ -73,7 +73,7 @@
                                 {
                                     <button onclick="swapPlayers(this)" value="@user.Id" class="position-absolute btn btn-secondary btn-swap">Zamjeni</button>
                                 }
-                                <button class="position-absolute btn btn-secondary btn-kick">Izbaci</button>
+                            <button onclick="kickFromRoom(@user.Id)" class="position-absolute btn btn-secondary btn-kick">Izbaci</button>
                             </div>
                         }
                     </div>
@@ -105,7 +105,7 @@
                                 {
                                     <button onclick="swapPlayers(this)" value="@user.Id" class="position-absolute btn btn-secondary btn-swap">Zamjeni</button>
                                 }
-                                <button class="position-absolute btn btn-secondary btn-kick">Izbaci</button>
+                                <button onclick="kickFromRoom(@user.Id)" class="position-absolute btn btn-secondary btn-kick">Izbaci</button>
                             </div>
                         }
                     </div>

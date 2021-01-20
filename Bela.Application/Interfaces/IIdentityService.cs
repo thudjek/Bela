@@ -22,5 +22,6 @@ namespace Bela.Application.Interfaces
         Task<string> GetUsersMainHubConnectionId(int userId);
         Task SetUsersMainHubConnectionId(int userId, string connectionId);
         Task<Result> DeleteUsersMainHubConnectionId(int userId);
+        Task UpdateWinsAndLosesAsync(List<Player> players, string quitUsername);
     }
 }

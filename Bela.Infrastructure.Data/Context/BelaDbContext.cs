@@ -15,13 +15,14 @@ namespace Bela.Infrastructure.Data.Context
     {
         public BelaDbContext(DbContextOptions options) : base(options) {    }
 
+        public DbSet<Room> Rooms { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<PlayerGame> PlayerGames { get; set; }
-        public DbSet<GameAction> GameActions { get; set; }
         public DbSet<Round> Rounds { get; set; }
-        public DbSet<Room> Rooms { get; set; }
-
+        public DbSet<CardPlayed> CardsPlayed { get; set; }
+        public DbSet<Call> Calls { get; set; }
+        
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
 

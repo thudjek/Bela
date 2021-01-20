@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
+
 namespace Bela.WebMVC.Controllers
 {
     [Authorize]
@@ -21,6 +23,7 @@ namespace Bela.WebMVC.Controllers
         private readonly IIdentityService _identityService;
         private readonly IHubContext<LobbyHub> _lobbyHubContext;
         private readonly IHubContext<RoomHub> _roomHubContext;
+        private readonly IHubContext<GameHub> _gameHubContext;
         private readonly IHubContext<MainHub> _mainHubContext;
 
         public RoomController(
@@ -29,6 +32,7 @@ namespace Bela.WebMVC.Controllers
             IIdentityService identityService,
             IHubContext<LobbyHub> lobbyHubContext,
             IHubContext<RoomHub> roomHubContext,
+            IHubContext<GameHub> gameHubContext,
             IHubContext<MainHub> mainHubContext)
         {
             _roomService = roomService;
@@ -36,6 +40,7 @@ namespace Bela.WebMVC.Controllers
             _identityService = identityService;
             _lobbyHubContext = lobbyHubContext;
             _roomHubContext = roomHubContext;
+            _gameHubContext = gameHubContext;
             _mainHubContext = mainHubContext;
         }
 
@@ -44,6 +49,10 @@ namespace Bela.WebMVC.Controllers
             var roomId = await _identityService.GetUsersRoomId(User.GetUserId());
             if (roomId == 0)
                 return RedirectToAction("Index", "Lobby");
+
+            var userId = User.GetUserId();
+            if (await _gameService.IsPlayerInGame(userId))
+                return RedirectToAction("Index", "Game");
 
             var model = await _roomService.GetRoomViewModelAsync(roomId, User.GetUserId(), User.GetUserName());
             return View(model);
@@ -126,10 +135,15 @@ namespace Bela.WebMVC.Controllers
             if (result.IsSucessfull)
             {
                 var connId = result.Values[0] as string;
-                await _mainHubContext.Clients.Client(connId).SendAsync("KickedFromRoom");
+                if (connId != null)
+                {
+                    await _mainHubContext.Clients.Client(connId).SendAsync("KickedFromRoom");
+                    await _roomHubContext.Clients.All.SendAsync("UpdateUserList");
+                    await _lobbyHubContext.Clients.All.SendAsync("UpdateUserList");
+                }
+                    
                 await _roomHubContext.Clients.Group("Room" + roomId.ToString()).SendAsync("UpdateUsersLayout");
-                await _roomHubContext.Clients.All.SendAsync("UpdateUserList");
-                await _lobbyHubContext.Clients.All.SendAsync("UpdateUserList");
+                
                 return Json(new { success = true });
             }
             return Json(new { success = false });
@@ -172,6 +186,11 @@ namespace Bela.WebMVC.Controllers
                     if (result.IsSucessfull)
                     {
                         await _roomHubContext.Clients.Group("Room" + roomId.ToString()).SendAsync("GameStarted");
+                        await _lobbyHubContext.Clients.All.SendAsync("UpdateRoomList");
+                        var gameId = (int)result.Values[0];
+                        TimerBela timer = new TimerBela(18000, OnTimerElapsed, gameId);
+                        TimerHelper.AddTimerForGameId(gameId, timer);
+                        timer.Start();
                         return Json(new { success = true });
                     }
                     else 
@@ -206,6 +225,22 @@ namespace Bela.WebMVC.Controllers
         public IActionResult GetRoomUsersLayoutViewComponent(int roomId, bool isOwner)
         {
             return ViewComponent("RoomUsersLayout", new { roomId, isOwner });
+        }
+
+        private void OnTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            TimerBela timer = sender as TimerBela;
+            var gameId = timer.GameId;
+            var result = _gameService.LeaveGameTimerElapsed(gameId);
+            if (result.IsSucessfull)
+            {
+                var quitUsername = result.Values[0] as string;
+                var opponent1Username = result.Values[1] as string;
+                var opponent2Username = result.Values[2] as string;
+                _gameHubContext.Clients.Group("Game" + gameId.ToString()).SendAsync("TimerElapsed", quitUsername, opponent1Username, opponent2Username);
+                _lobbyHubContext.Clients.All.SendAsync("UpdateRoomList");
+            }
+
         }
     }
 }

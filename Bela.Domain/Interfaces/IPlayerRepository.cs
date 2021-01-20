@@ -12,5 +12,7 @@ namespace Bela.Domain.Interfaces
         Task<bool> IsPlayerInGame(int playerId);
         Task<List<Player>> GetPlayerListByIds(List<int> playerIds);
         Task<Player> GetPlayerByUserIdAsync(int userId);
+        Task<Player> GetPlayerByUsernameAsync(string username);
+        Player GetPlayerByUsername(string username);
     }
 }

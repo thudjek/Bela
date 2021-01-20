@@ -1,6 +1,5 @@
 E:\Projects\Bela\Bela.WebMVC\bin\Debug\netcoreapp3.1\appsettings.Development.json
 E:\Projects\Bela\Bela.WebMVC\bin\Debug\netcoreapp3.1\appsettings.json
-E:\Projects\Bela\Bela.WebMVC\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 E:\Projects\Bela\Bela.WebMVC\bin\Debug\netcoreapp3.1\Bela.WebMVC.exe
 E:\Projects\Bela\Bela.WebMVC\bin\Debug\netcoreapp3.1\Bela.WebMVC.deps.json
 E:\Projects\Bela\Bela.WebMVC\bin\Debug\netcoreapp3.1\Bela.WebMVC.runtimeconfig.json
@@ -412,3 +411,8 @@ E:\Projects\Bela\Bela.WebMVC\obj\Debug\netcoreapp3.1\Razor\Views\Game\Index.csht
 E:\Projects\Bela\Bela.WebMVC\obj\Debug\netcoreapp3.1\Razor\Views\Game\_ViewStart.cshtml.g.cs
 E:\Projects\Bela\Bela.WebMVC\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LayoutGame.cshtml.g.cs
 E:\Projects\Bela\Bela.WebMVC\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Components\CardsInHand\Default.cshtml.g.cs
+E:\Projects\Bela\Bela.WebMVC\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Components\CallOnTable\Default.cshtml.g.cs
+E:\Projects\Bela\Bela.WebMVC\obj\Debug\netcoreapp3.1\scopedcss\bundle\Bela.WebMVC.styles.css
+E:\Projects\Bela\Bela.WebMVC\obj\Debug\netcoreapp3.1\Razor\Views\Game\EndScreen.cshtml.g.cs
+E:\Projects\Bela\Bela.WebMVC\obj\Debug\netcoreapp3.1\Razor\Views\Home\Error.cshtml.g.cs
+E:\Projects\Bela\Bela.WebMVC\bin\Debug\netcoreapp3.1\bundleconfig.json

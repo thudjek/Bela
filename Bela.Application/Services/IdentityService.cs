@@ -227,6 +227,27 @@ namespace Bela.Application.Services
             return result;
         }
 
+        public async Task UpdateWinsAndLosesAsync(List<Player> players, string quitUsername)
+        {
+            int counter = 0;
+            foreach (var player in players)
+            {
+                counter++;
+                var user = await _userManager.FindByIdAsync(player.UserId.ToString());
+                user.IsReady = false;
+                user.UserStatus = UserStatus.InRoom;
+
+                if (counter > 2)
+                {
+                    user.Losses++;
+                    if (user.UserName == quitUsername)
+                        user.Dropouts++;
+                }
+                else
+                    user.Wins++;
+            }
+        }
+
         private async Task UpdateOnlineUser(User user)
         {
             user.UserStatus = UserStatus.Online;

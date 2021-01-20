@@ -6,6 +6,11 @@ namespace Bela.Application.ViewModels.Game
 {
     public class CurrentGameDataViewModel
     {
+        public CurrentGameDataViewModel()
+        {
+            Rounds = new List<RoundShort>();
+        }
+
         public int CurrentRoundId { get; set; }
         public int CurrentRoundPhase { get; set; }
         public bool isLast { get; set; }
@@ -25,5 +30,18 @@ namespace Bela.Application.ViewModels.Game
         public string RightCard { get; set; }
         public string UpCard { get; set; }
         public string DownCard { get; set; }
+        public int LeftCallValue { get; set; }
+        public int RightCallValue { get; set; }
+        public int UpCallValue { get; set; }
+        public int DownCallValue { get; set; }
+        public double RemainingTime { get; set; }
+        public List<RoundShort> Rounds { get; set; }
+    }
+
+    public class RoundShort
+    {
+        public int Number { get; set; }
+        public int Score1 { get; set; }
+        public int Score2 { get; set; }
     }
 }

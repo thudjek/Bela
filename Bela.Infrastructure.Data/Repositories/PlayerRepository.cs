@@ -45,5 +45,15 @@ namespace Bela.Infrastructure.Data.Repositories
         {
             return await _dbContext.Players.FirstOrDefaultAsync(p => p.UserId == userId);
         }
+
+        public async Task<Player> GetPlayerByUsernameAsync(string username)
+        {
+            return await _dbContext.Players.FirstOrDefaultAsync(p => p.UserName == username);
+        }
+
+        public Player GetPlayerByUsername(string username)
+        {
+            return _dbContext.Players.FirstOrDefault(p => p.UserName == username);
+        }
     }
 }

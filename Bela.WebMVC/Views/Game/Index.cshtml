@@ -8,20 +8,25 @@
 }
 @section Scripts
 {
-    <script src="~/js/gameHub.js"></script>
+    <environment include="Development">
+        <script src="~/js/gameHub.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/gameHub.min.js"></script>
+    </environment>
     <script src="~/lib/sweetalert2/dist/sweetalert2.min.js"></script>
-    <script src="~/js/swal-helper.js"></script>
     <script>
         var currentRoundId = 0;
         var currentPhase = 0;
+        var currentTrump = 0;
         var myTurn = false;
+        var lockedPlayCard = false;
         var callArray = [];
+        var roundRowsShowed = false;
+        var timer = null;
 
         $(function () {
             getCurrentData();
-            renderCardsInHand();
-            checkIfCallValid();
-            resetCallCards();
         });
 
         function joinGameGroup() {
@@ -29,32 +34,10 @@
             gameHubConnection.invoke("JoinGameGroup", gameId);
         }
 
-        function selectCard(element, isPlayed) {
-            var cardString = $(element).attr("data-card");
-            if (isPlayed && myTurn) {
-                playCard(cardString);
-            }
-            else {
-                element.classList.toggle("card-selected");
-
-                if (element.classList.contains("card-selected")) {
-                    callArray.push(cardString);
-                }
-                else {
-                    removeFromArray(callArray, cardString);
-                }
-                
-            }
-        }
-
-        function playCard(cardString) {
-
-        }
-
         function renderCardsInHand() {
             var allCards = currentPhase > 1;
             var isPlayable = currentPhase > 2;
-            $("#handContainer").load("@Url.Action("GetCardsInHandViewComponent", "Game")?allCards=" + allCards + "&isPlayable=" + isPlayable);
+            $("#handContainer").load("@Url.Action("GetCardsInHandViewComponent", "Game")?allCards=" + allCards + "&isPlayable=" + isPlayable + "&trump=" + currentTrump);
         }
 
         function getCurrentData() {
@@ -64,22 +47,69 @@
                 renderRoundScores(data);
                 renderTotalScores(data);
                 renderCardsOnTable(data);
+
+                if (currentPhase == 2)
+                    renderCallSpeechBubbles(data);
+
+                if (data.rounds.length > 0) {
+                    data.rounds.forEach(function (item) {
+                        addNewRoundRow(item);
+                    });
+                }
+
                 renderSelectedTrump(data.selectedTrump, data.trumpSelectedBy);
-                renderCurrentPlayerScreen(data.positionToPlay, data.isLast);
+                renderCurrentPlayerScreen(data.positionToPlay, data.remainingTime, data.isLast);
                 renderDealerIcon(data.dealerPosition);
+                renderCardsInHand();
             });
         }
 
         function getTotalScores() {
-            $.get("@Url.Action("GetTotalScores", "Game")?roundId=" + currentRoundId, function (scores) {
-                renderTotalScores(scores);
+            $.get("@Url.Action("GetTotalScores", "Game", new { gameId = Model.Id })", function (data) {
+                renderTotalScores(data.scores);
+
+                if (data.rounds.length > 0) {
+                    $(".round-row").remove();
+                    data.rounds.forEach(function (item) {
+                        addNewRoundRow(item);
+                    });
+                }
             });
         }
 
         function getRoundScores() {
-            $.get("@Url.Action("GetRoundScores", "Game", new { gameId = Model.Id })", function (scores) {
+            $.get("@Url.Action("GetRoundScores", "Game")?roundId=" + currentRoundId, function (scores) {
                 renderRoundScores(scores);
             });
+        }
+
+        function addNewRoundRow(round) {
+            var table = document.getElementById("scoreTable");
+            var rowCount = table.rows.length;
+            var row = table.insertRow(rowCount - 1);
+            var cell1 = row.insertCell(0);
+            cell1.innerHTML = round.number + ".";
+            var cell1 = row.insertCell(1);
+            cell1.innerHTML = round.score1;
+            var cell1 = row.insertCell(2);
+            cell1.innerHTML = round.score2;
+            row.classList.add("round-row");
+            if (!roundRowsShowed)
+                $(row).attr("hidden", "hidden");
+        }
+
+        function setForStartOfNewRound() {
+            resetRoundScores();
+            resetTrump();
+            getTotalScores();
+            renderCardsInHand();
+        }
+
+        function resetCountdownProgressBars() {
+            $("#progressDown").addClass("d-none");
+            $("#progressUp").addClass("d-none");
+            $("#progressRight").addClass("d-none");
+            $("#progressLeft").addClass("d-none");
         }
 
         function resetSpeechBubbles() {
@@ -158,6 +188,7 @@
                         $("#selectedClubs").removeClass("d-none");
                         break;
                 }
+                currentTrump = trump;
             }
         }
 
@@ -166,6 +197,37 @@
             $("#cardDown").attr("src", data.downCard);
             $("#cardLeft").attr("src", data.leftCard);
             $("#cardRight").attr("src", data.rightCard);
+        }
+
+        function renderCallSpeechBubbles(data) {
+            if (data.downCallValue != null && data.downCallValue != 0)
+                $("#speechBubbleDown").text(data.downCallValue);
+
+            if (data.upCallValue != null && data.upCallValue != 0)
+                $("#speechBubbleUp").text(data.upCallValue);
+
+            if (data.leftCallValue != null && data.leftCallValue != 0)
+                $("#speechBubbleLeft").text(data.leftCallValue);
+
+            if (data.rightCallValue != null && data.rightCallValue != 0)
+                $("#speechBubbleRight").text(data.rightCallValue);
+        }
+
+        function renderPlayedCard(player, url) {
+            switch (player) {
+                case 1:
+                    $("#cardDown").attr("src", url);
+                    break;
+                case 2:
+                    $("#cardUp").attr("src", url);
+                    break;
+                case 3:
+                    $("#cardRight").attr("src", url);
+                    break;
+                case 4:
+                    $("#cardLeft").attr("src", url);
+                    break;
+            }
         }
 
         function renderDealerIcon(player) {
@@ -186,53 +248,69 @@
             }
         }
 
-        function animateCountdown(player) {
+        function animateCountdown(player, remainingTime) {
+            var widthPercentage = remainingTime * 15;
+            resetCountdownProgressBars();
+            if (timer != null)
+                clearInterval(timer);
             switch (player) {
                 case 1: {
+                    var element = document.getElementById("progressDown");
+                    var cloned = element.cloneNode(true);
+                    if (remainingTime != 0) {
+                        var timer = cloned.childNodes[1];
+                        $(timer).css("width", widthPercentage + "%");
+                        $(timer).css("animation", "roundtime " + remainingTime + "s linear forwards");
+                    }
+                    element.parentElement.replaceChild(cloned, element);
                     $("#progressDown").removeClass("d-none");
-                    $("#progressBarDown").css("width", "0%");
-                    $("#progressBarDown").css("background-color", "red");
-                    $("#progressUp").addClass("d-none");
-                    $("#progressRight").addClass("d-none");
-                    $("#progressLeft").addClass("d-none");
                     myTurn = true;
                     break;
                 }
                 case 2: {
+                    var element = document.getElementById("progressUp");
+                    var cloned = element.cloneNode(true);
+                    if (remainingTime != 0) {
+                        var timer = cloned.childNodes[1];
+                        $(timer).css("width", widthPercentage + "%");
+                        $(timer).css("animation", "roundtime " + remainingTime + "s linear forwards");
+                    }
+                    element.parentElement.replaceChild(cloned, element);
                     $("#progressUp").removeClass("d-none");
-                    $("#progressBarUp").css("width", "0%");
-                    $("#progressBarUp").css("background-color", "red");
-                    $("#progressDown").addClass("d-none");
-                    $("#progressRight").addClass("d-none");
-                    $("#progressLeft").addClass("d-none");
                     myTurn = false;
                     break;
                 }
                 case 3: {
+                    var element = document.getElementById("progressRight");
+                    var cloned = element.cloneNode(true);
+                    if (remainingTime != 0) {
+                        var timer = cloned.childNodes[1];
+                        $(timer).css("width", widthPercentage + "%");
+                        $(timer).css("animation", "roundtime " + remainingTime + "s linear forwards");
+                    }
+                    element.parentElement.replaceChild(cloned, element);
                     $("#progressRight").removeClass("d-none");
-                    $("#progressBarRight").css("width", "0%");
-                    $("#progressBarRight").css("background-color", "red");
-                    $("#progressUp").addClass("d-none");
-                    $("#progressDown").addClass("d-none");
-                    $("#progressLeft").addClass("d-none");
                     myTurn = false;
                     break;
                 }
                 case 4: {
+                    var element = document.getElementById("progressLeft");
+                    var cloned = element.cloneNode(true);
+                    if (remainingTime != 0) {
+                        var timer = cloned.childNodes[1];
+                        $(timer).css("width", widthPercentage + "%");
+                        $(timer).css("animation", "roundtime " + remainingTime + "s linear forwards");
+                    }
+                    element.parentElement.replaceChild(cloned, element);
                     $("#progressLeft").removeClass("d-none");
-                    $("#progressBarLeft").css("width", "0%");
-                    $("#progressBarLeft").css("background-color", "red");
-                    $("#progressUp").addClass("d-none");
-                    $("#progressRight").addClass("d-none");
-                    $("#progressDown").addClass("d-none");
                     myTurn = false;
                     break;
                 }
             }
         }
 
-        function renderCurrentPlayerScreen(player, isLast = false) {
-            animateCountdown(player);
+        function renderCurrentPlayerScreen(player, remainingTime, isLast = false) {
+            animateCountdown(player, remainingTime);
             if (myTurn) {
                 if (currentPhase == 1) {
                     swalHelper.showCallTrumpDialog(isLast);
@@ -243,46 +321,247 @@
             }
         }
 
-        function selectTrump(trump) {
+        function renderSpeechBubbleForCall(player, callValue) {
+            switch (player) {
+                case 1:
+                    $("#speechBubbleDown").text(callValue);
+                    break;
+                case 2:
+                    $("#speechBubbleUp").text(callValue);
+                    break;
+                case 3:
+                    $("#speechBubbleRight").text(callValue);
+                    break;
+                case 4:
+                    $("#speechBubbleLeft").text(callValue);
+                    break;
+            }
+        }
+
+        function selectTrump(trump, isLast) {
             Swal.close();
-            $.post("@Url.Action("SelectTrump", "Game")", { roundId: currentRoundId, trump: trump, username: '@Model.UserNameDown' }, function (data) {
+            $.post("@Url.Action("SelectTrump", "Game")", { roundId: currentRoundId, trump: trump, username: '@Model.UserNameDown', isLast: isLast }, function (data) {
                 if (!data.success) {
-                    swalHelper.alertError(data.error);
+                    swalHelper.alertErrorWithCallback(data.error, swalHelper.showCallTrumpDialog, 'gameContainer', isLast);
                 }
             });
         }
 
         function makeACall(isCall) {
             Swal.close();
-            console.log(isCall);
+            $.post("@Url.Action("MakeACall", "Game")", { cardStrings: callArray, roundId: currentRoundId, isCall: isCall }, function (data) {
+                if (!data.success) {
+                    swalHelper.alertErrorWithCallback(data.error, swalHelper.showCallDialog, 'gameContainer');
+                }
+            });
         }
 
-        function getOnScreenPositionFromReturnedData(data) {
-            switch (@((int)Model.Position)) {
-                case 1:
-                    return data.positionToPlayDown;
-                case 2:
-                    return data.positionToPlayUp;
-                case 3:
-                    return data.positionToPlayRight;
-                case 4:
-                    return data.positionToPlayLeft;
+        function selectCard(element, isPlayed, askForBela) {
+            var cardString = $(element).attr("data-card");
+            if (isPlayed && myTurn) {
+                if (!lockedPlayCard) {
+                    if (askForBela && checkIfBothBelaCardsInHand(cardString)) {
+                        lockedPlayCard = true;
+                        swalHelper.showBelaDialog(cardString, playCard);
+                    }
+                    else {
+                        playCard(cardString, false)
+                    }
+                }
+            }
+            else {
+                element.classList.toggle("card-selected");
+
+                if (element.classList.contains("card-selected")) {
+                    callArray.push(cardString);
+                }
+                else {
+                    removeFromArray(callArray, cardString);
+                }
             }
         }
 
-        function checkIfCallValid() {
-            callArray.push("HA");
-            callArray.push("HK");
-            callArray.push("HQ");
+        function checkIfBothBelaCardsInHand(cardString) {
+            var partnerCard = getPartnerCardForBela(cardString);
+            if (partnerCard != "") {
+                if ($("div[data-card='" + partnerCard + "']").length) {
+                    return true;
+                }
+            }
 
-            $.post("@Url.Action("MakeACall", "Game")", { cardStrings: callArray, roundId: currentRoundId }, function (data) {
-                console.log(data);
+            return false;
+        }
+
+        function getPartnerCardForBela(cardString) {
+            var arr = cardString.split("");
+            return arr[0] == "Q" ? "K" + arr[1] : arr[0] == "K" ? "Q" + arr[1] : "";
+        }
+
+        function playCard(cardString, belaCalled) {
+            var arrCardsInHand = getCardsInHandArray();
+            $.post("@Url.Action("PlayACard", "Game")", { cardString: cardString, roundId: currentRoundId, position: @((int)Model.Position), cardsInHandStrings: arrCardsInHand, belaCalled: belaCalled }, function (data) {
+                if (data.success) {
+                    removeFromHand(cardString);
+                }
+                else {
+                    swalHelper.alertMessageWithTimer(data.error, 500);
+                }
             });
+        }
+
+        function getCardsInHandArray() {
+            var cards = $(".card-in-hand");
+            var arr = [];
+
+            cards.each(function () {
+                arr.push($(this).attr("data-card"));
+            });
+
+            return arr;
+        }
+
+        function getOnScreenPositionFromReturnedData(data, forPositionToPlay, forCall, forPlayedCard) {
+            switch (@((int)Model.Position)) {
+                case 1:
+                    return forPositionToPlay ? data.positionToPlayDown : forCall ? data.positionThatCalledDown : forPlayedCard ? data.positionThatPlayedCardDown : 0;
+                case 2:
+                    return forPositionToPlay ? data.positionToPlayUp : forCall ? data.positionThatCalledUp : forPlayedCard ? data.positionThatPlayedCardUp : 0;
+                case 3:
+                    return forPositionToPlay ? data.positionToPlayRight : forCall ? data.positionThatCalledRight : forPlayedCard ? data.positionThatPlayedCardRight : 0;
+                case 4:
+                    return forPositionToPlay ? data.positionToPlayLeft : forCall ? data.positionThatCalledLeft : forPlayedCard ? data.positionThatPlayedCardLeft : 0;
+            }
+        }
+
+        function showCallsOnTable(data) {
+            var positionForShowing;
+            switch (@((int)Model.Position)) {
+                case 1:
+                    positionForShowing = data.winningCallPositionDown;
+                    break;
+                case 2:
+                    positionForShowing = data.winningCallPositionUp;
+                    break;
+                case 3:
+                    positionForShowing = data.winningCallPositionRight;
+                    break;
+                case 4:
+                    positionForShowing = data.winningCallPositionLeft;
+                    break;
+            }
+
+            var url = "@Url.Action("GetCallOnTableViewComponent", "Game")?roundId=" + currentRoundId + "&playerPosition=" + data.winningCallPositionReal;
+            switch (positionForShowing) {
+                case 1:
+                    $("#callContainerDown").load(url + "&isPartner=false");
+                    $("#callContainerUp").load(url + "&isPartner=true");
+                    break;
+                case 2:
+                    $("#callContainerUp").load(url + "&isPartner=false");
+                    $("#callContainerDown").load(url + "&isPartner=true");
+                    break;
+                case 3:
+                    $("#callContainerRight").load(url + "&isPartner=false");
+                    $("#callContainerLeft").load(url + "&isPartner=true");
+                    break;
+                case 4:
+                    $("#callContainerLeft").load(url + "&isPartner=false");
+                    $("#callContainerRight").load(url + "&isPartner=true");
+                    break;
+                case 0:
+                    swalHelper.alertMessageWithTimer("Nema zvanja", 2500);
+                    break;
+            }
+        }
+
+        function removeFromHand(cardString) {
+            var element = $("div[data-card='" + cardString + "']");
+            element.remove();
+            var emptyDiv = "<div class='col m-1'></div>";
+            $("#handContainer").append(emptyDiv);
+        }
+
+        function redirectToEndScreen() {
+            var form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/Game/EndScreen";
+            document.body.appendChild(form);
+            var elementGameId = document.createElement("input");
+            elementGameId.name = "gameId";
+            elementGameId.value = '@Model.Id';
+            elementGameId.type = "hidden";
+            form.appendChild(elementGameId);
+            var elementMyUsername = document.createElement("input");
+            elementMyUsername.name = "myUsername";
+            elementMyUsername.value = '@Model.UserNameDown';
+            elementMyUsername.type = "hidden";
+            form.appendChild(elementMyUsername);
+            var elementTeammateUsername = document.createElement("input");
+            elementTeammateUsername.name = "teammateUsername";
+            elementTeammateUsername.value = '@Model.UserNameUp';
+            elementTeammateUsername.type = "hidden";
+            form.appendChild(elementTeammateUsername);
+            var elementOpponent1Username = document.createElement("input");
+            elementOpponent1Username.name = "opponent1Username";
+            elementOpponent1Username.value = '@Model.UserNameLeft';
+            elementOpponent1Username.type = "hidden";
+            form.appendChild(elementOpponent1Username);
+            var elementOpponent2Username = document.createElement("input");
+            elementOpponent2Username.name = "opponent2Username";
+            elementOpponent2Username.value = '@Model.UserNameRight';
+            elementOpponent2Username.type = "hidden";
+            form.appendChild(elementOpponent2Username);
+            form.submit();
+        }
+
+        function redirectToEndScreenQuit(quitUsername, opponent1Username, opponent2Username) {
+            var form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/Game/EndScreenQ";
+            document.body.appendChild(form);
+            var elementQuitUsername = document.createElement("input");
+            elementQuitUsername.name = "quitUsername";
+            elementQuitUsername.value = quitUsername;
+            elementQuitUsername.type = "hidden";
+            form.appendChild(elementQuitUsername);
+            var elementOpponent1Username = document.createElement("input");
+            elementOpponent1Username.name = "opponent1Username";
+            elementOpponent1Username.value = opponent1Username;
+            elementOpponent1Username.type = "hidden";
+            form.appendChild(elementOpponent1Username);
+            var elementOpponent2Username = document.createElement("input");
+            elementOpponent2Username.name = "opponent2Username";
+            elementOpponent2Username.value = opponent2Username;
+            elementOpponent2Username.type = "hidden";
+            form.appendChild(elementOpponent2Username);
+            console.log(form);
+            form.submit();
+        }
+
+        function leaveGame() {
+            var gameId = @Model.Id;
+            var quitUsername = '@Model.UserNameDown';
+            var opponent1Username = '@Model.UserNameLeft'
+            var opponent2Username = '@Model.UserNameRight'
+            $.post("@Url.Action("LeaveGame", "Game")", { gameId: gameId, quitUsername: quitUsername, opponent1Username: opponent1Username, opponent2Username: opponent2Username }, function (data) {
+                if (!data.success) {
+                    swalHelper.alertError(data.error);
+                }
+            });
+        }
+
+        function toggleRoundRows() {
+            roundRowsShowed = !roundRowsShowed;
+            if (roundRowsShowed)
+                $(".round-row").removeAttr("hidden");
+            else
+                $(".round-row").attr("hidden", "hidden");
         }
 
     </script>
 }
 
+<button onclick="swalHelper.showLeaveGameDialog(leaveGame)" class="btn btn-sm btn-primary">&times;</button>
 <div id="gameContainer" class="game-container">
     <div class="row mb-2 justify-content-center">
         <div id="playerUp" class="col text-center">
@@ -290,9 +569,8 @@
                 <img id="playerUpDealerImg" class="d-none dealer-img" title="Djelitelj" src="~/imgs/d-icon.png" />
             </div>
             <span class="game-username">@Model.UserNameUp</span>
-            <div id="progressUp" class="progress mr-auto ml-auto mt-1 mb-2 d-none" style="height: 5px; width: 8%">
-                <div id="progressBarUp" class="progress-bar" role="progressbar">
-                </div>
+            <div id="progressUp" class="countdown-progress-bar countdown-progress-bar-tb d-none">
+                <div></div>
             </div>
             <div id="speechBubbleUp" class="speech-bubble speech-bubble-up-down"></div>
         </div>
@@ -303,9 +581,8 @@
                 <img id="playerLeftDealerImg" class="d-none dealer-img" title="Djelitelj" src="~/imgs/d-icon.png" />
             </div>
             <span class="game-username">@Model.UserNameLeft</span>
-            <div id="progressLeft" class="progress ml-auto mt-1 mb-2 d-none" style="height: 5px; width: 60%">
-                <div id="progressBarLeft" class="progress-bar" role="progressbar">
-                </div>
+            <div id="progressLeft" class="countdown-progress-bar countdown-progress-bar-l d-none">
+                <div></div>
             </div>
             <div id="speechBubbleLeft" class="speech-bubble speech-bubble-left"></div>
         </div>
@@ -314,36 +591,18 @@
                 <div class="col">
                     <img id="cardUp" class="card-img card-img-in-play" src="" />
                     <div id="callContainerUp" class="d-flex call-container">
-                        <img class="card-img card-img-in-play" src="~/imgs/cards/herc_as.png" />
-                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/herc_kralj.png" />
-                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/herc_baba.png" />
-                        <img class="card-img card-img-in-play call-card-next" src="~/imgs/cards/pik_sedam.png" />
-                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/pik_osam.png" />
-                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/pik_devet.png" />
                     </div>
                 </div>
             </div>
             <div class="row card-row card-row-middle">
-                <div class="col text-center">
+                <div class="col text-center position-relative">
                     <img id="cardLeft" class="card-img card-img-middle-row card-img-in-play" src="" />
-                    <div id="callContainerLeft" class="d-flex call-container-left">
-                        <img class="card-img card-img-in-play" src="~/imgs/cards/herc_as.png" />
-                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/herc_kralj.png" />
-                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/herc_baba.png" />
-                        <img class="card-img card-img-in-play call-card-next" src="~/imgs/cards/pik_sedam.png" />
-                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/pik_osam.png" />
-                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/pik_devet.png" />
+                    <div id="callContainerLeft" class="d-flex call-container-middle-row call-container-left">
                     </div>
                 </div>
-                <div class="col text-center">
+                <div class="col text-center position-relative">
                     <img id="cardRight" class="card-img card-img-middle-row card-img-in-play" src="" />
-                    <div id="callContainerRight" class="d-flex call-container-right">
-                        <img class="card-img card-img-in-play" src="~/imgs/cards/herc_as.png" />
-                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/herc_kralj.png" />
-                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/herc_baba.png" />
-                        <img class="card-img card-img-in-play call-card-next" src="~/imgs/cards/pik_sedam.png" />
-                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/pik_osam.png" />
-                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/pik_devet.png" />
+                    <div id="callContainerRight" class="d-flex call-container-middle-row call-container-right">
                     </div>
                 </div>
             </div>
@@ -351,12 +610,6 @@
                 <div class="col">
                     <img id="cardDown" class="card-img card-img-in-play" src="" />
                     <div id="callContainerDown" class="d-flex call-container">
-                        <img class="card-img card-img-in-play" src="~/imgs/cards/herc_as.png" />
-                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/herc_kralj.png" />
-                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/herc_baba.png" />
-                        <img class="card-img card-img-in-play call-card-next" src="~/imgs/cards/pik_sedam.png" />
-                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/pik_osam.png" />
-                        <img class="card-img card-img-in-play call-card" src="~/imgs/cards/pik_devet.png" />
                     </div>
                 </div>
             </div>
@@ -373,9 +626,8 @@
                 <img id="playerRightDealerImg" class="d-none dealer-img" title="Djelitelj" src="~/imgs/d-icon.png" />
             </div>
             <span class="game-username">@Model.UserNameRight</span>
-            <div id="progressRight" class="progress mr-auto mt-1 mb-2 d-none" style="height: 5px; width: 60%">
-                <div id="progressBarRight" class="progress-bar" role="progressbar">
-                </div>
+            <div id="progressRight" class="countdown-progress-bar countdown-progress-bar-r d-none">
+                <div></div>
             </div>
             <div id="speechBubbleRight" class="speech-bubble speech-bubble-right"></div>
         </div>
@@ -386,9 +638,8 @@
                 <img id="playerDownDealerImg" class="d-none dealer-img" title="Djelitelj" src="~/imgs/d-icon.png" />
             </div>
             <span class="game-username">@Model.UserNameDown</span>
-            <div id="progressDown" class="progress mr-auto ml-auto mt-1 mb-2 d-none" style="height: 5px; width: 8%">
-                <div id="progressBarDown" class="progress-bar" role="progressbar">
-                </div>
+            <div id="progressDown" class="countdown-progress-bar countdown-progress-bar-tb d-none">
+                <div></div>
             </div>
             <div id="speechBubbleDown" class="speech-bubble speech-bubble-up-down"></div>
         </div>
@@ -413,7 +664,7 @@
         <td id="viPoints"></td>
     </tr>
     <tr>
-        <td>Trenutni rezultat</td>
+        <td>Trenutna runda</td>
         <td id="miRoundTotal"></td>
         <td id="viRoundTotal"></td>
     </tr>
@@ -421,5 +672,12 @@
         <td><strong>UKUPNO</strong></td>
         <td id="miTotalScore"></td>
         <td id="viTotalScore"></td>
+    </tr>
+    <tr>
+        <td class="cursor-pointer" onclick="toggleRoundRows()" colspan="3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+            </svg>
+        </td>
     </tr>
 </table>

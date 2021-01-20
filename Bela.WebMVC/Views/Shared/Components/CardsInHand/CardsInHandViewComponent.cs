@@ -7,6 +7,9 @@ using Bela.WebMVC.ComponentModels;
 using System.Security.Claims;
 using Bela.WebMVC.Extensions;
 using Bela.Application.Interfaces;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
+using System.Text.Encodings.Web;
+using Bela.Application.ViewModels.Game;
 
 namespace Bela.WebMVC.Views.Shared.Components.CardsInHand
 {
@@ -18,26 +21,14 @@ namespace Bela.WebMVC.Views.Shared.Components.CardsInHand
             _gameService = gameService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(bool allCards, bool isPlayable)
+        public async Task<IViewComponentResult> InvokeAsync(bool allCards, bool isPlayable, int trump)
         {
             HandVCModel model = new HandVCModel();
             var user = (ClaimsPrincipal)User;
             var userId = user.GetUserId();
 
             model.IsPlayable = isPlayable;
-            model.CardsInHand = await _gameService.GetCardHandModelListForPlayer(userId, allCards);
-
-            //model.IsPlayable = true;
-            //model.CardsInHand = new List<Application.ViewModels.Game.CardInHandModel>()
-            //{
-            //    new Application.ViewModels.Game.CardInHandModel() { CardString = "HA", CardUrl = "imgs/cards/herc_as.png" },
-            //    new Application.ViewModels.Game.CardInHandModel() { CardString = "HK", CardUrl = "imgs/cards/herc_kralj.png" },
-            //    new Application.ViewModels.Game.CardInHandModel() { CardString = "HK", CardUrl = "imgs/cards/herc_kralj.png" },
-            //    new Application.ViewModels.Game.CardInHandModel() { CardString = "HK", CardUrl = "imgs/cards/herc_kralj.png" },
-            //    new Application.ViewModels.Game.CardInHandModel() { CardString = "HK", CardUrl = "imgs/cards/herc_kralj.png" },
-            //    new Application.ViewModels.Game.CardInHandModel() { CardString = "HK", CardUrl = "imgs/cards/herc_kralj.png" },
-            //    new Application.ViewModels.Game.CardInHandModel() { CardString = "HK", CardUrl = "imgs/cards/herc_kralj.png" }
-            //};
+            model.CardsInHand = await _gameService.GetCardHandModelListForPlayer(userId, allCards, trump);
 
             return View(model);
         }

@@ -33,7 +33,5 @@ namespace Bela.Domain.Extensions
         {
             return hand.OrderBy(c => c.Suit).ThenBy(c => c.Value).ToList();
         }
-
-
     }
 }

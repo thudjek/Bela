@@ -158,7 +158,32 @@ namespace Bela.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GameActions",
+                name: "Calls",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    DateModified = table.Column<DateTime>(nullable: true),
+                    RoundId = table.Column<int>(nullable: false),
+                    PlayerPosition = table.Column<int>(nullable: false),
+                    Type = table.Column<int>(nullable: false),
+                    Value = table.Column<int>(nullable: false),
+                    HighestCard = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Calls", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Calls_Rounds_RoundId",
+                        column: x => x.RoundId,
+                        principalTable: "Rounds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CardsPlayed",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -168,15 +193,14 @@ namespace Bela.Infrastructure.Data.Migrations
                     RoundId = table.Column<int>(nullable: false),
                     RoundPhase = table.Column<int>(nullable: false),
                     PlayerPosition = table.Column<int>(nullable: false),
-                    Call = table.Column<int>(nullable: true),
-                    HighestValueInACall = table.Column<int>(nullable: true),
-                    CardPlayed = table.Column<string>(nullable: true)
+                    CardString = table.Column<string>(nullable: true),
+                    Value = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GameActions", x => x.Id);
+                    table.PrimaryKey("PK_CardsPlayed", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GameActions_Rounds_RoundId",
+                        name: "FK_CardsPlayed_Rounds_RoundId",
                         column: x => x.RoundId,
                         principalTable: "Rounds",
                         principalColumn: "Id",
@@ -320,8 +344,13 @@ namespace Bela.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_GameActions_RoundId",
-                table: "GameActions",
+                name: "IX_Calls_RoundId",
+                table: "Calls",
+                column: "RoundId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CardsPlayed_RoundId",
+                table: "CardsPlayed",
                 column: "RoundId");
 
             migrationBuilder.CreateIndex(
@@ -393,7 +422,10 @@ namespace Bela.Infrastructure.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GameActions");
+                name: "Calls");
+
+            migrationBuilder.DropTable(
+                name: "CardsPlayed");
 
             migrationBuilder.DropTable(
                 name: "PlayerGames");

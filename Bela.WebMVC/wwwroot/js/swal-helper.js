@@ -1,10 +1,37 @@
 ﻿var swalHelper = {
 
-    alertError: function (error) {
+    alertError: function (error, target = 'body') {
         Swal.fire({
             icon: "error",
-            text: error
+            text: error,
+            target: target == 'body' ? target : document.getElementById(target)
         });
+    },
+
+    alertErrorWithCallback: function (error, callback, target = 'body', paramForCallback = null) {
+        Swal.fire({
+            icon: "error",
+            text: error,
+            target: target == 'body' ? target : document.getElementById(target)
+        }).then(function () {
+            if (paramForCallback == null)
+                callback();
+            else {
+                callback(paramForCallback);
+            }
+        });
+    },
+
+    alertMessageWithTimer: function (message, miliseconds) {
+        Swal.fire({
+            width: '24rem',
+            position: 'center',
+            backdrop: false,
+            target: document.getElementById("gameContainer"),
+            title: message,
+            showConfirmButton: false,
+            timer: miliseconds
+        })
     },
 
     callCreateRoomModal: function (username) {
@@ -85,16 +112,15 @@
             backdrop: false,
             target: document.getElementById("gameContainer"),
             html: "<h3 style='color: white;'>Zovi aduta</h3><br />" +
-                  "<a href='#' onclick='selectTrump(1)'><img src='imgs/suits/herc.png'/></a>&nbsp;&nbsp;" +
-                  "<a href='#' onclick='selectTrump(2)'><img src='imgs/suits/pik.png'/></a>&nbsp;&nbsp;" +
-                  "<a href='#' onclick='selectTrump(3)'><img src='imgs/suits/karo.png'/></a>&nbsp;&nbsp;" +
-                  "<a href='#' onclick='selectTrump(4)'><img src='imgs/suits/tref.png'/></a><br /><br />" +
+                  "<a href='#' onclick='selectTrump(1, " + isLast + ")'><img src='imgs/suits/herc.png'/></a>&nbsp;&nbsp;" +
+                  "<a href='#' onclick='selectTrump(2, " + isLast + ")'><img src='imgs/suits/pik.png'/></a>&nbsp;&nbsp;" +
+                  "<a href='#' onclick='selectTrump(3, " + isLast + ")'><img src='imgs/suits/karo.png'/></a>&nbsp;&nbsp;" +
+                  "<a href='#' onclick='selectTrump(4, " + isLast + ")'><img src='imgs/suits/tref.png'/></a><br /><br />" +
                   (isLast ? "<p style='color: red;'>Zadnji ste i morate zvati</p>" :
                   "<a type='button' style='color: white;' onclick='selectTrump(0)' class='btn btn-primary'>Dalje</a>"),
             allowEnterKey: false,
             showConfirmButton: false,
             showCancelButton: false,
-            allowOutsideClick: false,
             allowEscapeKey: false
         });
     },
@@ -111,8 +137,52 @@
             allowEnterKey: false,
             showConfirmButton: false,
             showCancelButton: false,
-            allowOutsideClick: false,
             allowEscapeKey: false
+        });
+    },
+
+    showBelaDialog: function (cardString, playCard) {
+        Swal.fire({
+            width: '24rem',
+            background: '#36454f',
+            backdrop: false,
+            target: document.getElementById("gameContainer"),
+            html: "<h2 style='color: white;'>Zovi belu?</h2>",
+            showCancelButton: true,
+            confirmButtonText: 'Zovi',
+            cancelButtonText: 'Dalje',
+            allowEnterKey: false,
+            allowEscapeKey: false,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                lockedPlayCard = false;
+                playCard(cardString, true);
+            }
+            else {
+                lockedPlayCard = false;
+                playCard(cardString, false);
+            }
+        });
+    },
+
+    showLeaveGameDialog: function (callback) {
+        Swal.fire({
+            width: '24rem',
+            background: '#36454f',
+            backdrop: true,
+            target: document.getElementById("gameContainer"),
+            html: "<h2 style='color: white;'>Želite li izači iz igre?</h2>",
+            showCancelButton: true,
+            confirmButtonText: 'Izađi',
+            cancelButtonText: 'Odustani',
+            allowEnterKey: false,
+            allowEscapeKey: false,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                callback();
+            }
         });
     }
 }

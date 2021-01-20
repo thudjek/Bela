@@ -1,0 +1,24 @@
+﻿@model Bela.WebMVC.ComponentModels.CallOnTableVCModel;
+
+@foreach (var list in Model.CardUrls)
+{
+    var firstList = list == Model.CardUrls.First();
+    foreach (var url in list)
+    {
+        if (url == list.First())
+        {
+            if (firstList)
+            {
+                <img class="card-img card-img-in-play" src="@url" />
+            }
+            else
+            {
+                <img class="card-img card-img-in-play call-card-next" src="@url" />
+            }
+        }
+        else
+        {
+            <img class="card-img card-img-in-play call-card" src="@url" />
+        }
+    }
+}

@@ -1,0 +1,46 @@
+﻿@model Bela.Application.ViewModels.Game.EndScreenViewModel;
+@{
+    ViewData["Title"] = "Belot.hr";
+}
+<div class="container mt-5">
+    <br />
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2>@Model.Winner1 i @Model.Winner2 su pobijedili</h2>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+
+        @if (!Model.PlayerQuit)
+        {
+            <div class="col-12">
+                <table class="endscreen-table">
+                    <tr>
+                        <th>@Model.MyUsername<br />@Model.TeammateUsername</th>
+                        <th>@Model.Opponent1Username<br />@Model.Opponent2Username</th>
+                    </tr>
+                    <tr>
+                        <td><strong>@Model.MyTeamScore</strong></td>
+                        <td><strong>@Model.OpponentTeamScore</strong></td>
+                    </tr>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="col-12 text-center">
+                <h2>@Model.QuitUsername je odustao</h2>
+            </div>
+        }
+    </div>
+    <br />
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-12 text-center">
+            <a href="@Url.Action("Index", "Room")" class="btn btn-primary">Vrati se u sobu</a>
+        </div>
+    </div>
+</div>

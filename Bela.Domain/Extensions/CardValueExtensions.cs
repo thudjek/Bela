@@ -15,7 +15,14 @@ namespace Bela.Domain.Extensions
             }
             else
             {
-                return ((int)cardValue).ToString();
+                return cardValue switch
+                {
+                    CardValue.Seven => "7",
+                    CardValue.Eight => "8",
+                    CardValue.Nine => "9",
+                    CardValue.Ten => "10",
+                    _ => ""
+                };
             }
         }
     }

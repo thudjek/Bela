@@ -12,7 +12,10 @@ namespace Bela.Domain.Interfaces
         void CreateGame(Game game);
         Task<Game> GetGameById(int gameId);
         Task<Game> GetGameWithPlayersByRoomId(int roomId);
+        Task<Game> GetGameWithPlayersById(int gameId);
         Task<Game> GetGameWithRoundsById(int gameId);
+        Game GetGameWithPlayersAndRoundsById(int gameId);
         Task<Round> GetRoundById(int roundId);
+        bool SaveGameDataForTimerElapsed(int gameId, ref string quitUsername, ref string opponent1Username, ref string opponent2Username);
     }
 }

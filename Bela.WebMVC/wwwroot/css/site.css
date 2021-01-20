@@ -242,11 +242,35 @@ body {
     height: 50px;
 }
 
-.progress-bar {
-    width: 100%;
-    transition-duration: 10000ms;
-    transition-timing-function: linear;
-    transition-property: background-color, width;
+@keyframes roundtime {
+    to {
+        transform: scaleX(0);
+    }
+}
+
+.countdown-progress-bar div {
+    height: 5px;
+    background: linear-gradient(to bottom, red, #900);
+    animation: roundtime 15s linear forwards;
+    transform-origin: left center;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.countdown-progress-bar-tb {
+    width: 12%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.countdown-progress-bar-l {
+    width: 80%;
+    margin-left: auto;
+}
+
+.countdown-progress-bar-r {
+    width: 80%;
+    margin-right: auto;
 }
 
 .dealer {
@@ -310,17 +334,21 @@ body {
     margin-bottom: 5rem;
 }
 
+.call-container-middle-row {
+    position: absolute;
+    top: 0;
+    transform: translate(0, -50%) rotate(90deg);
+    width: 90px;
+}
+
 .call-container-left {
-    width: 30%;
+    right: 50%;
     justify-content: center;
-    transform: rotate(90deg);
 }
 
 .call-container-right {
-    margin-left: 12rem;
-    width: 30%;
+    left: 50%;
     justify-content: center;
-    transform: rotate(90deg);
 }
 
 .call-card {
@@ -329,6 +357,17 @@ body {
 
 .call-card-next {
     margin-left: 0rem;
+}
+
+.endscreen-table {
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+.endscreen-table td, .endscreen-table th{
+    border: 2px solid white;
+    padding: 2rem;
+    text-align: center;
 }
 
 @media (max-width: 1269px) {
@@ -361,15 +400,15 @@ body {
     }
 
     .call-card {
-        margin-left: -2rem;
+        margin-left: -2.3rem;
     }
 
     .call-card-next {
         margin-left: 0rem;
     }
 
-    .call-container-right {
-        margin-left: 10rem;
+    .call-container-middle-row {
+        width: 70px;
     }
 }
 
@@ -409,15 +448,11 @@ body {
     }
 
     .call-card {
-        margin-left: -2.6rem;
+        margin-left: -2.4rem;
     }
 
     .call-card-next {
         margin-left: -0.5rem;
-    }
-
-    .call-container-right {
-        margin-left: 9rem;
     }
 }
 
@@ -473,8 +508,8 @@ body {
         margin-left: -0.5rem;
     }
 
-    .call-container-right {
-        margin-left: 8rem;
+    .call-container-middle-row {
+        width: 55px;
     }
 }
 
@@ -531,13 +566,8 @@ body {
         font-size: 10px;
     }
 
-    .call-container-left {
-        width: 35%;
-    }
-
-    .call-container-right {
-        margin-left: 6rem;
-        width: 35%;
+    .call-container-middle-row {
+        width: 42px;
     }
 }
 
@@ -574,6 +604,10 @@ body {
 
     .call-card-next {
         margin-left: -0.5rem;
+    }
+
+    .call-container-middle-row {
+        width: 38px;
     }
 }
 
