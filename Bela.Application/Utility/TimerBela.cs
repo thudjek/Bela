@@ -45,7 +45,7 @@ namespace Bela.Application.Utility
 
         public void Pause()
         {
-            if(Enabled)
+            if (Enabled)
             {
                 SetRemainingTime();
                 IsPaused = true;
@@ -77,7 +77,7 @@ namespace Bela.Application.Utility
             return RemainingTime;
         }
 
-        private void SetRemainingTime() 
+        private void SetRemainingTime()
         {
             RemainingTime = (Interval / 1000) - (DateTime.Now - StartTime).TotalSeconds;
         }
