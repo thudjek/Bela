@@ -1,9 +1,9 @@
 E:\Projects\Bela\Bela.Domain\bin\Debug\netcoreapp3.1\Bela.Domain.deps.json
 E:\Projects\Bela\Bela.Domain\bin\Debug\netcoreapp3.1\Bela.Domain.dll
 E:\Projects\Bela\Bela.Domain\bin\Debug\netcoreapp3.1\Bela.Domain.pdb
+E:\Projects\Bela\Bela.Domain\obj\Debug\netcoreapp3.1\Bela.Domain.csprojAssemblyReference.cache
 E:\Projects\Bela\Bela.Domain\obj\Debug\netcoreapp3.1\Bela.Domain.AssemblyInfoInputs.cache
 E:\Projects\Bela\Bela.Domain\obj\Debug\netcoreapp3.1\Bela.Domain.AssemblyInfo.cs
 E:\Projects\Bela\Bela.Domain\obj\Debug\netcoreapp3.1\Bela.Domain.csproj.CoreCompileInputs.cache
 E:\Projects\Bela\Bela.Domain\obj\Debug\netcoreapp3.1\Bela.Domain.dll
 E:\Projects\Bela\Bela.Domain\obj\Debug\netcoreapp3.1\Bela.Domain.pdb
-E:\Projects\Bela\Bela.Domain\obj\Debug\netcoreapp3.1\Bela.Domain.csprojAssemblyReference.cache

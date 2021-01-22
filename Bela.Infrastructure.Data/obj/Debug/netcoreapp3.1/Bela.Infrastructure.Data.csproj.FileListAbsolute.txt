@@ -8,8 +8,8 @@ E:\Projects\Bela\Bela.Infrastructure.Data\bin\Debug\netcoreapp3.1\Bela.Domain.pd
 E:\Projects\Bela\Bela.Infrastructure.Data\obj\Debug\netcoreapp3.1\Bela.Infrastructure.Data.csprojAssemblyReference.cache
 E:\Projects\Bela\Bela.Infrastructure.Data\obj\Debug\netcoreapp3.1\Bela.Infrastructure.Data.AssemblyInfoInputs.cache
 E:\Projects\Bela\Bela.Infrastructure.Data\obj\Debug\netcoreapp3.1\Bela.Infrastructure.Data.AssemblyInfo.cs
+E:\Projects\Bela\Bela.Infrastructure.Data\obj\Debug\netcoreapp3.1\Bela.Infrastructure.Data.csproj.CoreCompileInputs.cache
 E:\Projects\Bela\Bela.Infrastructure.Data\obj\Debug\netcoreapp3.1\Bela.Infrastructure.Data.csproj.CopyComplete
 E:\Projects\Bela\Bela.Infrastructure.Data\obj\Debug\netcoreapp3.1\Bela.Infrastructure.Data.dll
 E:\Projects\Bela\Bela.Infrastructure.Data\obj\Debug\netcoreapp3.1\Bela.Infrastructure.Data.pdb
 E:\Projects\Bela\Bela.Infrastructure.Data\obj\Debug\netcoreapp3.1\Bela.Infrastructure.Data.genruntimeconfig.cache
-E:\Projects\Bela\Bela.Infrastructure.Data\obj\Debug\netcoreapp3.1\Bela.Infrastructure.Data.csproj.CoreCompileInputs.cache

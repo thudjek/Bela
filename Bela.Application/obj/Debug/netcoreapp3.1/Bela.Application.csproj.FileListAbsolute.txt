@@ -6,7 +6,7 @@ E:\Projects\Bela\Bela.Application\bin\Debug\netcoreapp3.1\Bela.Domain.pdb
 E:\Projects\Bela\Bela.Application\obj\Debug\netcoreapp3.1\Bela.Application.csprojAssemblyReference.cache
 E:\Projects\Bela\Bela.Application\obj\Debug\netcoreapp3.1\Bela.Application.AssemblyInfoInputs.cache
 E:\Projects\Bela\Bela.Application\obj\Debug\netcoreapp3.1\Bela.Application.AssemblyInfo.cs
+E:\Projects\Bela\Bela.Application\obj\Debug\netcoreapp3.1\Bela.Application.csproj.CoreCompileInputs.cache
 E:\Projects\Bela\Bela.Application\obj\Debug\netcoreapp3.1\Bela.Application.csproj.CopyComplete
 E:\Projects\Bela\Bela.Application\obj\Debug\netcoreapp3.1\Bela.Application.dll
 E:\Projects\Bela\Bela.Application\obj\Debug\netcoreapp3.1\Bela.Application.pdb
-E:\Projects\Bela\Bela.Application\obj\Debug\netcoreapp3.1\Bela.Application.csproj.CoreCompileInputs.cache
