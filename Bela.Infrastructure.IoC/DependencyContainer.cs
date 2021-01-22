@@ -52,6 +52,9 @@ namespace Bela.Infrastructure.IoC
         public static void AddDbContext(IServiceCollection services, string connString)
         {
             services.AddDbContext<BelaDbContext>(o => o.UseSqlServer(connString));
+
+            var context = services.BuildServiceProvider().GetService<BelaDbContext>();
+            context.Database.Migrate();
         }
 
         public static void AddMappingProfile(IServiceCollection services)

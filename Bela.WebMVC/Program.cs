@@ -32,24 +32,22 @@ namespace Bela.WebMVC
             {
                 Log.Information("Application is starting up");
                 var host = CreateHostBuilder(args).Build();
-                if (env == Environments.Development)
+                using (var scope = host.Services.CreateScope())
                 {
-                    using (var scope = host.Services.CreateScope())
+                    var serviceProvider = scope.ServiceProvider;
+                    try
                     {
-                        var serviceProvider = scope.ServiceProvider;
-                        try
-                        {
-                            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-                            var playerRepository = serviceProvider.GetRequiredService<IPlayerRepository>();
+                        var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+                        var playerRepository = serviceProvider.GetRequiredService<IPlayerRepository>();
 
-                            await DataSeeder.SeedUsers(userManager, playerRepository);
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.Error(ex, "Seeding data to database failed");
-                        }
+                        await DataSeeder.SeedUsers(userManager, playerRepository);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "Seeding data to database failed");
                     }
                 }
+               
                 await host.RunAsync();
             }
             catch (Exception ex)
