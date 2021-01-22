@@ -10,6 +10,7 @@ using Bela.Application.ViewModels.User;
 using Bela.WebMVC.Extensions;
 using Bela.WebMVC.Filters;
 using Bela.WebMVC.Hubs;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -22,18 +23,26 @@ namespace Bela.WebMVC.Controllers
         private readonly IEmailService _emailService;
         private readonly IHubContext<LobbyHub> _lobbyHubContext;
         private readonly IHubContext<RoomHub> _roomHubContext;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public HomeController(
             IIdentityService identityService,
             IEmailService emailService,
             IHubContext<LobbyHub> lobbyHubContext,
-            IHubContext<RoomHub> roomHubContext)
+            IHubContext<RoomHub> roomHubContext,
+            IWebHostEnvironment webHostEnvironment)
         {
             _identityService = identityService;
             _emailService = emailService;
             _lobbyHubContext = lobbyHubContext;
             _roomHubContext = roomHubContext;
-    }
+            _webHostEnvironment = webHostEnvironment;
+        }
+
+        public ActionResult<string> TestEnvironment()
+        {
+            return _webHostEnvironment.EnvironmentName;
+        }
 
         [ServiceFilter(typeof(RestrictToAuthorized))]
         public IActionResult Index()
