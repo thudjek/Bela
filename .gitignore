@@ -1,8 +1,8 @@
 # obj folder
-obj/
+[Oo]bj/
 
 # bin folder
-bin/
+[Bb]in/
 
 appsettings.json
 appsettings.Development.json
