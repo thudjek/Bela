@@ -12,9 +12,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure.IoC", "Infrastructure.IoC", "{4DF340E9-D8B7-41FA-AAAF-2925C1EB86CE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebMVC", "WebMVC", "{E332E710-756B-4FCF-A1D0-87A51AB63FCB}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bela.Domain", "Bela.Domain\Bela.Domain.csproj", "{B8C58B2D-6544-4BB8-9C78-71A7248E8FF8}"
 EndProject

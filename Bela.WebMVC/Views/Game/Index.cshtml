@@ -1,6 +1,6 @@
 ﻿@model Bela.Application.ViewModels.Game.GameViewModel;
 @{
-    ViewData["Title"] = "Belot.hr";
+    ViewData["Title"] = "Belot.com.hr";
 }
 @section Styles
 {
@@ -420,16 +420,16 @@
             return arr;
         }
 
-        function getOnScreenPositionFromReturnedData(data, forPositionToPlay, forCall, forPlayedCard) {
+        function getOnScreenPositionFromReturnedData(data, forPositionToPlay, forCall, forPlayedCard, forDealer) {
             switch (@((int)Model.Position)) {
                 case 1:
-                    return forPositionToPlay ? data.positionToPlayDown : forCall ? data.positionThatCalledDown : forPlayedCard ? data.positionThatPlayedCardDown : 0;
+                    return forPositionToPlay ? data.positionToPlayDown : forCall ? data.positionThatCalledDown : forPlayedCard ? data.positionThatPlayedCardDown : forDealer ? data.dealerPositionDown : 0;
                 case 2:
-                    return forPositionToPlay ? data.positionToPlayUp : forCall ? data.positionThatCalledUp : forPlayedCard ? data.positionThatPlayedCardUp : 0;
+                    return forPositionToPlay ? data.positionToPlayUp : forCall ? data.positionThatCalledUp : forPlayedCard ? data.positionThatPlayedCardUp : forDealer ? data.dealerPositionUp : 0;
                 case 3:
-                    return forPositionToPlay ? data.positionToPlayRight : forCall ? data.positionThatCalledRight : forPlayedCard ? data.positionThatPlayedCardRight : 0;
+                    return forPositionToPlay ? data.positionToPlayRight : forCall ? data.positionThatCalledRight : forPlayedCard ? data.positionThatPlayedCardRight : forDealer ? data.dealerPositionRight : 0;
                 case 4:
-                    return forPositionToPlay ? data.positionToPlayLeft : forCall ? data.positionThatCalledLeft : forPlayedCard ? data.positionThatPlayedCardLeft : 0;
+                    return forPositionToPlay ? data.positionToPlayLeft : forCall ? data.positionThatCalledLeft : forPlayedCard ? data.positionThatPlayedCardLeft : forDealer ? data.dealerPositionLeft : 0;
             }
         }
 

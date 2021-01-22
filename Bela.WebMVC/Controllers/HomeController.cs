@@ -96,7 +96,8 @@ namespace Bela.WebMVC.Controllers
 
                     //ViewBag.Email = model.Email;
                     //return View("EmailActivation");
-                    return RedirectToAction("Index");
+
+                    return View("Success");
                 }
                 else
                 {

@@ -11,10 +11,10 @@ namespace Bela.Application.Utility
         {
             EmailMessage message = new EmailMessage()
             {
-                From = "noreply@belot.hr",
+                From = "noreply@Belot.com.hr",
                 To = userEmail,
-                Subject = "Belot.hr Aktivacijski link",
-                Body = $"<h2>Dobrodošli na Belot.hr</h2> <br \\> <h4>Dovršite registraciju klikom na <a href=\"{link}\">link</a></h4>"
+                Subject = "Belot.com.hr Aktivacijski link",
+                Body = $"<h2>Dobrodošli na Belot.com.hr</h2> <br \\> <h4>Dovršite registraciju klikom na <a href=\"{link}\">link</a></h4>"
             };
 
             return message;
@@ -24,9 +24,9 @@ namespace Bela.Application.Utility
         {
             EmailMessage message = new EmailMessage()
             {
-                From = "noreply@belot.hr",
+                From = "noreply@Belot.com.hr",
                 To = userEmail,
-                Subject = "Belot.hr Promjena lozinke",
+                Subject = "Belot.com.hr Promjena lozinke",
                 Body = $"<h4>Kliknite na <a href=\"{link}\">link</a> za promjenu lozinke</h4>"
             };
 

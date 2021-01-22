@@ -9,13 +9,13 @@ gameHubConnection.on("JoinGameGroup", function () {
 gameHubConnection.on("TrumpCalled", function (data) {
     currentPhase = data.roundPhase;
     renderSelectedTrump(data.selectedTrump, data.trumpSelectedBy);
-    renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false));
+    renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false, false));
     renderCardsInHand();
 });
 
 gameHubConnection.on("CallMade", function (data) {
 
-    renderSpeechBubbleForCall(getOnScreenPositionFromReturnedData(data, false, true, false), data.callValue)
+    renderSpeechBubbleForCall(getOnScreenPositionFromReturnedData(data, false, true, false, false), data.callValue)
 
     if (currentPhase != data.roundPhase) {
         currentPhase = data.roundPhase;
@@ -27,13 +27,13 @@ gameHubConnection.on("CallMade", function (data) {
             getRoundScores();
             setTimeout(function () {
                 resetCallCards();
-                renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false));
+                renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false, false));
                 renderCardsInHand();
             }, 2500);
         }, 2500);
     }
     else {
-        renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false));
+        renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false, false));
     }
 });
 
@@ -48,18 +48,18 @@ gameHubConnection.on("TurnPassed", function (data) {
             getRoundScores();
             setTimeout(function () {
                 resetCallCards();
-                renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false));
+                renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false, false));
                 renderCardsInHand();
             }, 2500);
         }, 2500);
     }
     else {
-        renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false), data.isLast);
+        renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false, false), data.isLast);
     }
 });
 
 gameHubConnection.on("CardPlayed", function (data) {
-    renderPlayedCard(getOnScreenPositionFromReturnedData(data, false, false, true), data.playedCardUrl);
+    renderPlayedCard(getOnScreenPositionFromReturnedData(data, false, false, true, false), data.playedCardUrl);
     if (!data.isGameOver) {
         if (data.isNewRound) {
             currentRoundId = data.currentRoundId;
@@ -70,18 +70,20 @@ gameHubConnection.on("CardPlayed", function (data) {
                     swalHelper.alertMessageWithTimer(data.roundAlert, 1000);
                     setTimeout(function () {
                         setForStartOfNewRound();
-                        renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false));
+                        renderDealerIcon(getOnScreenPositionFromReturnedData(data, false, false, false, true));
+                        renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false, false));
                     }, 1000);
                 }
                 else {
                     setForStartOfNewRound();
-                    renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false));
+                    renderDealerIcon(getOnScreenPositionFromReturnedData(data, false, false, false, true));
+                    renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false, false));
                 }
             }, 1500);
         }
         else {
             if (data.belaCalled) {
-                renderSpeechBubbleForCall(getOnScreenPositionFromReturnedData(data, false, false, true), "BELA")
+                renderSpeechBubbleForCall(getOnScreenPositionFromReturnedData(data, false, false, true, false), "BELA")
                 setTimeout(function () {
                     resetSpeechBubbles();
                 }, 1500);
@@ -91,14 +93,14 @@ gameHubConnection.on("CardPlayed", function (data) {
                 setTimeout(function () {
                     getRoundScores();
                     resetTable();
-                    renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false));
+                    renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false, false));
                 }, 1500);
             }
             else {
                 if (data.belaCalled) {
                     getRoundScores();
                 }
-                renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false));
+                renderCurrentPlayerScreen(getOnScreenPositionFromReturnedData(data, true, false, false, false));
             }
         }
     }
