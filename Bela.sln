@@ -12,16 +12,19 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure.IoC", "Infrastructure.IoC", "{4DF340E9-D8B7-41FA-AAAF-2925C1EB86CE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebMVC", "WebMVC", "{E332E710-756B-4FCF-A1D0-87A51AB63FCB}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bela.Domain", "Bela.Domain\Bela.Domain.csproj", "{B8C58B2D-6544-4BB8-9C78-71A7248E8FF8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bela.Application", "Bela.Application\Bela.Application.csproj", "{B9444A24-4A21-43C6-A805-2F6214DB0A7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bela.WebMVC", "Bela.WebMVC\Bela.WebMVC.csproj", "{37FD3D05-A119-491B-B750-2844B4477329}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bela.WebMVC", "Bela.WebMVC\Bela.WebMVC.csproj", "{37FD3D05-A119-491B-B750-2844B4477329}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bela.Infrastructure.Data", "Bela.Infrastructure.Data\Bela.Infrastructure.Data.csproj", "{0F1F319B-988B-462D-8569-71A3EC06057D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bela.Infrastructure.Data", "Bela.Infrastructure.Data\Bela.Infrastructure.Data.csproj", "{0F1F319B-988B-462D-8569-71A3EC06057D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bela.Infrastructure.IoC", "Bela.Infrastructure.IoC\Bela.Infrastructure.IoC.csproj", "{603DFBEF-3106-45AB-9B07-466CF9DF97A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bela.Infrastructure.IoC", "Bela.Infrastructure.IoC\Bela.Infrastructure.IoC.csproj", "{603DFBEF-3106-45AB-9B07-466CF9DF97A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
