@@ -37,6 +37,11 @@ namespace Bela.Application.Utility
             OriginalInterval = interval;
         }
 
+        public override string ToString()
+        {
+            return $"GameId = {GameId}, StartTime = {StartTime.ToShortDateString()}, RemainingTime = {RemainingTime}, IsPaused = {IsPaused}";
+        }
+
         public new void Start()
         {
             StartTime = DateTime.Now;

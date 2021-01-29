@@ -7,6 +7,8 @@ using Bela.WebMVC.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +27,7 @@ namespace Bela.WebMVC.Controllers
         private readonly IHubContext<RoomHub> _roomHubContext;
         private readonly IHubContext<GameHub> _gameHubContext;
         private readonly IHubContext<MainHub> _mainHubContext;
+        private readonly IConfiguration _configuration;
 
         public RoomController(
             IRoomService roomService,
@@ -33,7 +36,8 @@ namespace Bela.WebMVC.Controllers
             IHubContext<LobbyHub> lobbyHubContext,
             IHubContext<RoomHub> roomHubContext,
             IHubContext<GameHub> gameHubContext,
-            IHubContext<MainHub> mainHubContext)
+            IHubContext<MainHub> mainHubContext,
+            IConfiguration configuration)
         {
             _roomService = roomService;
             _gameService = gameService;
@@ -42,6 +46,7 @@ namespace Bela.WebMVC.Controllers
             _roomHubContext = roomHubContext;
             _gameHubContext = gameHubContext;
             _mainHubContext = mainHubContext;
+            _configuration = configuration;
         }
 
         public async Task<IActionResult> Index()
@@ -229,9 +234,10 @@ namespace Bela.WebMVC.Controllers
 
         private void OnTimerElapsed(object sender, ElapsedEventArgs e)
         {
+            var connString = _configuration.GetConnectionString("DefaultConnection");
             TimerBela timer = sender as TimerBela;
             var gameId = timer.GameId;
-            var result = _gameService.LeaveGameTimerElapsed(gameId);
+            var result = _gameService.LeaveGameTimerElapsed(gameId, connString);
             if (result.IsSucessfull)
             {
                 var quitUsername = result.Values[0] as string;
@@ -240,7 +246,6 @@ namespace Bela.WebMVC.Controllers
                 _gameHubContext.Clients.Group("Game" + gameId.ToString()).SendAsync("TimerElapsed", quitUsername, opponent1Username, opponent2Username);
                 _lobbyHubContext.Clients.All.SendAsync("UpdateRoomList");
             }
-
         }
     }
 }

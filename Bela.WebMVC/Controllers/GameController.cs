@@ -98,7 +98,7 @@ namespace Bela.WebMVC.Controllers
         {
             var userId = User.GetUserId();
             var model = await _gameService.GetCurrentRoundData(gameId, userId);
-            var timer = TimerHelper.GetTimerForGameId(Convert.ToInt32(gameId));
+            TimerBela timer = TimerHelper.GetTimerForGameId(Convert.ToInt32(gameId));
             model.RemainingTime = timer != null ? TimerHelper.GetTimerForGameId(Convert.ToInt32(gameId)).GetRemainingTime() : 0;
             return Json(model);
         }

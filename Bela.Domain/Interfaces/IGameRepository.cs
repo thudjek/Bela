@@ -16,6 +16,6 @@ namespace Bela.Domain.Interfaces
         Task<Game> GetGameWithRoundsById(int gameId);
         Game GetGameWithPlayersAndRoundsById(int gameId);
         Task<Round> GetRoundById(int roundId);
-        bool SaveGameDataForTimerElapsed(int gameId, ref string quitUsername, ref string opponent1Username, ref string opponent2Username);
+        bool SaveGameDataForTimerElapsed(int gameId, string connString, ref string quitUsername, ref string opponent1Username, ref string opponent2Username);
     }
 }

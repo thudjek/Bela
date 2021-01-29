@@ -42,6 +42,8 @@
     <Compile Remove="Migrations\20201019200432_InitMigration.Designer.cs" />
     <Compile Remove="Migrations\20201102193100_InitMigration.cs" />
     <Compile Remove="Migrations\20201102193100_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20210123192802_AddedLogs.cs" />
+    <Compile Remove="Migrations\20210123192802_AddedLogs.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

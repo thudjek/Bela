@@ -99,6 +99,7 @@
         }
 
         function setForStartOfNewRound() {
+            callArray = [];
             resetRoundScores();
             resetTrump();
             getTotalScores();
@@ -365,18 +366,23 @@
                         swalHelper.showBelaDialog(cardString, playCard);
                     }
                     else {
-                        playCard(cardString, false)
+                        if (!lockedPlayCard) {
+                            playCard(cardString, false)
+                        }
+                        
                     }
                 }
             }
             else {
                 element.classList.toggle("card-selected");
 
-                if (element.classList.contains("card-selected")) {
-                    callArray.push(cardString);
-                }
-                else {
-                    removeFromArray(callArray, cardString);
+                if (currentPhase == 2) {
+                    if (element.classList.contains("card-selected")) {
+                        callArray.push(cardString);
+                    }
+                    else {
+                        removeFromArray(callArray, cardString);
+                    }
                 }
             }
         }
@@ -399,12 +405,15 @@
 
         function playCard(cardString, belaCalled) {
             var arrCardsInHand = getCardsInHandArray();
+            lockedPlayCard = true;
             $.post("@Url.Action("PlayACard", "Game")", { cardString: cardString, roundId: currentRoundId, position: @((int)Model.Position), cardsInHandStrings: arrCardsInHand, belaCalled: belaCalled }, function (data) {
                 if (data.success) {
                     removeFromHand(cardString);
+                    lockedPlayCard = false;
                 }
                 else {
                     swalHelper.alertMessageWithTimer(data.error, 500);
+                    lockedPlayCard = false;
                 }
             });
         }
@@ -534,7 +543,6 @@
             elementOpponent2Username.value = opponent2Username;
             elementOpponent2Username.type = "hidden";
             form.appendChild(elementOpponent2Username);
-            console.log(form);
             form.submit();
         }
 

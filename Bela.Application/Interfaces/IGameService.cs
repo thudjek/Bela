@@ -25,6 +25,6 @@ namespace Bela.Application.Interfaces
         Task<Result> MakeACall(List<string> cardStrings, int roundId, int userId, bool isCall);
         Task<Result> PlayACard(string playedCardString, int roundId, int userId, PlayerPosition position, List<string> cardsInHandStrings, bool belaCalled);
         Task<Result> LeaveGame(int gameId, string quitUsername);
-        Result LeaveGameTimerElapsed(int gameId);
+        Result LeaveGameTimerElapsed(int gameId, string connString);
     }
 }

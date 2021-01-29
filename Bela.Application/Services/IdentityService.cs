@@ -13,6 +13,7 @@ using AutoMapper;
 using Bela.Domain.Enums;
 using System.Security.Policy;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace Bela.Application.Services
 {
@@ -183,6 +184,7 @@ namespace Bela.Application.Services
         public async Task SetUsersMainHubConnectionId(int userId, string connectionId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
+
             user.MainHubConnectionId = connectionId;
             if(user.UserStatus == UserStatus.Offline)
             {
@@ -191,7 +193,7 @@ namespace Bela.Application.Services
                 else
                     user.UserStatus = UserStatus.Online;
             }
-            await _userManager.UpdateAsync(user);
+            var identityResult = await _userManager.UpdateAsync(user);
         }
 
         public async Task<Result> DeleteUsersMainHubConnectionId(int userId)
@@ -207,8 +209,10 @@ namespace Bela.Application.Services
             var result = identityResult.ToResult();
 
             if (result.IsSucessfull && user.RoomId.HasValue)
+            {
                 result.Values = new object[] { user.RoomId };
-
+            }
+                
             return result;
         }
 

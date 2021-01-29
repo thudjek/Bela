@@ -22,7 +22,7 @@ namespace Bela.Infrastructure.Data.Context
         public DbSet<Round> Rounds { get; set; }
         public DbSet<CardPlayed> CardsPlayed { get; set; }
         public DbSet<Call> Calls { get; set; }
-        
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
 
@@ -73,9 +73,7 @@ namespace Bela.Infrastructure.Data.Context
             modelBuilder.Entity<IdentityUserClaim<int>>().ToTable("UserClaims");
             modelBuilder.Entity<IdentityRoleClaim<int>>().ToTable("RoleClaims");
             modelBuilder.Entity<IdentityUserLogin<int>>().ToTable("UserLogins");
-            modelBuilder.Entity<IdentityUserToken<int>>().ToTable("UserTokens");
-
-            
+            modelBuilder.Entity<IdentityUserToken<int>>().ToTable("UserTokens"); 
         }
 
     }

@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Bela.Application.Interfaces;
 using System.Threading;
 using Bela.Application.Utility;
+using Microsoft.Extensions.Logging;
 
 namespace Bela.WebMVC.Hubs
 {

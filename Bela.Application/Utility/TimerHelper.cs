@@ -28,5 +28,11 @@ namespace Bela.Application.Utility
                 TimerCollection.Remove(gameId);
             }
         }
+
+        public static int GetNumberOfTimers()
+        {
+            return TimerCollection.Count;
+        }
+
     }
 }

@@ -434,11 +434,11 @@ namespace Bela.Application.Services
                 return Result.Fail(new string[] { "Dogodila se greška" });
         }
 
-        public Result LeaveGameTimerElapsed(int gameId)
+        public Result LeaveGameTimerElapsed(int gameId, string connString)
         {
             string quitUsername = "", opponent1Username = "", opponent2Username = "";
 
-            var isSaved = _gameRepository.SaveGameDataForTimerElapsed(gameId, ref quitUsername, ref opponent1Username, ref opponent2Username);
+            var isSaved = _gameRepository.SaveGameDataForTimerElapsed(gameId, connString, ref quitUsername, ref opponent1Username, ref opponent2Username);
             if (isSaved)
             {
                 var result = Result.Success();

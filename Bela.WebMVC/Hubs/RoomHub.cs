@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bela.WebMVC.Extensions;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 
 namespace Bela.WebMVC.Hubs
 {
@@ -34,12 +35,6 @@ namespace Bela.WebMVC.Hubs
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             await base.OnDisconnectedAsync(exception);
-        }
-
-        private int GetUserId()
-        {
-            var httpContext = Context.GetHttpContext();
-            return httpContext.User.GetUserId();
         }
     }
 }

@@ -4,6 +4,7 @@ using Bela.Domain.Extensions;
 using Bela.Domain.Interfaces;
 using Bela.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,6 @@ namespace Bela.Infrastructure.Data.Repositories
     {
         public GameRepository(BelaDbContext dbContext) : base(dbContext)
         {
-            
         }
 
         public async Task<bool> IsRoomInGame(int roomId)
@@ -90,10 +90,10 @@ namespace Bela.Infrastructure.Data.Repositories
             return round;
         }
 
-        public bool SaveGameDataForTimerElapsed(int gameId, ref string quitUsername, ref string opponent1Username, ref string opponent2Username)
+        public bool SaveGameDataForTimerElapsed(int gameId, string connString, ref string quitUsername, ref string opponent1Username, ref string opponent2Username)
         {
             BelaDbContextFactory factory = new BelaDbContextFactory();
-            var dbCtx = factory.CreateDbContext(new string[] { });
+            var dbCtx = factory.CreateDbContext(new string[] { connString });
 
             var game = dbCtx.Games
                 .Include(g => g.PlayerGames).ThenInclude(pg => pg.Player)
@@ -111,7 +111,7 @@ namespace Bela.Infrastructure.Data.Repositories
             var quitPlayer = dbCtx.Players.FirstOrDefault(p => p.UserName == username);
             var query = game.PlayerGames.Select(pg => pg.Player);
             List<Player> players = quitPlayer.Team.Value == Team.FirstTeam ? query.OrderByDescending(p => p.Team).ToList() :
-                     quitPlayer.Team.Value == Team.SecondTeam ? query.OrderBy(p => p.Team).ToList() : query.ToList();
+                        quitPlayer.Team.Value == Team.SecondTeam ? query.OrderBy(p => p.Team).ToList() : query.ToList();
 
             int counter = 0;
             foreach (var player in players)
