@@ -10,7 +10,7 @@ namespace Bela.WebMVC.Hubs
     {
         public GameHub()
         {
-
+            //test comment for git
         }
 
         public override Task OnConnectedAsync()
