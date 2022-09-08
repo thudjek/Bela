@@ -1,0 +1,26 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "37fd3d05-a119-491b-b750-2844b4477329": {
+      "ProjectGuid": "37fd3d05-a119-491b-b750-2844b4477329",
+      "DisplayName": "Bela.WebMVC",
+      "ColorIndex": 0
+    },
+    "b8c58b2d-6544-4bb8-9c78-71a7248e8ff8": {
+      "ProjectGuid": "b8c58b2d-6544-4bb8-9c78-71a7248e8ff8",
+      "DisplayName": "Bela.Domain",
+      "ColorIndex": 1
+    },
+    "b9444a24-4a21-43c6-a805-2f6214db0a7c": {
+      "ProjectGuid": "b9444a24-4a21-43c6-a805-2f6214db0a7c",
+      "DisplayName": "Bela.Application",
+      "ColorIndex": 2
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 3
+}
